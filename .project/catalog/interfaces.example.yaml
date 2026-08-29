@@ -1,0 +1,48 @@
+schema_version: "1.0"
+status: example
+warning: "Illustrative contracts only; replace with resolvable specifications."
+interfaces:
+  - id: api:contract-query-v1
+    kind: api
+    name: Contract Query API (example)
+    owner_repository: contract-api-example
+    owner: backend-group-placeholder
+    specification: null
+    consumers: [contract-web-example, contract-tests-example]
+    compatibility_policy: unknown
+    data_classification: unknown
+    lifecycle: active
+    last_verified: null
+  - id: event:contract-query-audit-v1
+    kind: event
+    name: Contract Query Audit Event (example)
+    owner_repository: contract-api-example
+    owner: backend-group-placeholder
+    specification: null
+    consumers: [contract-glue-example]
+    compatibility_policy: unknown
+    data_classification: unknown
+    lifecycle: active
+    last_verified: null
+  - id: dataset:contract-analytics-v1
+    kind: dataset
+    name: Contract Analytics Data Product (example)
+    owner_repository: contract-glue-example
+    owner: data-owner-placeholder
+    specification: null
+    consumers: []
+    compatibility_policy: unknown
+    data_classification: unknown
+    lifecycle: active
+    last_verified: null
+  - id: service:contract-record-v1
+    kind: service
+    name: Contract System-of-Record Service (example)
+    owner_repository: contract-ims-online-example
+    owner: mainframe-online-placeholder
+    specification: null
+    consumers: [contract-api-example]
+    compatibility_policy: unknown
+    data_classification: unknown
+    lifecycle: active
+    last_verified: null

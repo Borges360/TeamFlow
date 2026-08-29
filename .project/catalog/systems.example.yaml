@@ -1,0 +1,47 @@
+schema_version: "1.0"
+status: example
+warning: "Replace all records; none are production truth."
+systems:
+  - id: contract-experience
+    name: Contract Experience (example)
+    domains: [contracts]
+    capabilities: [contract-query]
+    owners:
+      technical: squad-example
+      business: product-owner-placeholder
+    criticality: unknown
+    data_classification: unknown
+    repository_ids: [mobile-shell-example, contract-web-example, contract-api-example]
+    last_verified: null
+  - id: contract-data-platform
+    name: Contract Data Platform (example)
+    domains: [contracts, analytics]
+    capabilities: [contract-analytics]
+    owners:
+      technical: data-squad-placeholder
+      data: data-owner-placeholder
+    criticality: unknown
+    data_classification: unknown
+    repository_ids: [contract-glue-example, contract-catalog-example]
+    last_verified: null
+  - id: contract-system-of-record
+    name: Contract System of Record (example)
+    domains: [contracts, mainframe]
+    capabilities: [contract-record]
+    owners:
+      technical: mainframe-team-placeholder
+      business: product-owner-placeholder
+    criticality: unknown
+    data_classification: unknown
+    repository_ids: [contract-ims-online-example, contract-batch-example]
+    last_verified: null
+  - id: contract-platform-operations
+    name: Contract Platform Operations (example)
+    domains: [platform]
+    capabilities: [infrastructure, delivery, observability, quality-automation]
+    owners:
+      technical: platform-team-placeholder
+    criticality: unknown
+    data_classification: internal
+    repository_ids: [contract-terraform-example, contract-cloudformation-example, contract-observability-example, contract-tests-example]
+    last_verified: null

@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+.DS_Store
+Thumbs.db
+
+# Local discovery caches and temporary agent scratch space.
+.agent-cache/
+deliveries/*/scratch/
+
+# Keep delivery artifacts versionable by default. Projects may override this.
+

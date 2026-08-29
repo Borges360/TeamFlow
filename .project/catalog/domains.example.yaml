@@ -1,0 +1,36 @@
+schema_version: "1.0"
+status: example
+warning: "Replace with authoritative business/domain ownership."
+domains:
+  - id: contracts
+    name: Contracts (example)
+    owner: product-owner-placeholder
+    capabilities: [contract-query, contract-record]
+    systems: [contract-experience, contract-system-of-record]
+    classification_default: unknown
+    regulations: []
+    last_verified: null
+  - id: analytics
+    name: Contract Analytics (example)
+    owner: data-owner-placeholder
+    capabilities: [contract-analytics]
+    systems: [contract-data-platform]
+    classification_default: unknown
+    regulations: []
+    last_verified: null
+  - id: platform
+    name: Engineering Platform (example)
+    owner: platform-team-placeholder
+    capabilities: [infrastructure, delivery, observability]
+    systems: [contract-platform-operations]
+    classification_default: internal
+    regulations: []
+    last_verified: null
+  - id: mainframe
+    name: Mainframe Platform (example)
+    owner: mainframe-team-placeholder
+    capabilities: [online-processing, batch-processing]
+    systems: [contract-system-of-record]
+    classification_default: unknown
+    regulations: []
+    last_verified: null

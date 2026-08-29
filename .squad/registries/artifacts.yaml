@@ -1,0 +1,19 @@
+schema_version: "1.0"
+artifact_types:
+  demand-intake: .squad/templates/demand-intake.md
+  delivery-index: .squad/templates/delivery-index.md
+  requirements: .squad/templates/requirements.md
+  context-bundle: .squad/templates/context-bundle.md
+  architecture: .squad/templates/architecture.md
+  adr: .squad/templates/adr.md
+  test-plan: .squad/templates/test-plan.md
+  test-evidence: .squad/templates/test-evidence.md
+  qa-report: .squad/templates/qa-report.md
+  threat-model: .squad/templates/threat-model.md
+  performance-review: .squad/templates/performance-review.md
+  slo: .squad/templates/slo.md
+  production-readiness: .squad/templates/production-readiness.md
+  final-review: .squad/templates/final-review.md
+  incident-postmortem: .squad/templates/incident-postmortem.md
+  delivery-summary: .squad/templates/delivery-summary.md
+  exception: .squad/templates/exception.md

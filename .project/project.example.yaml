@@ -1,0 +1,27 @@
+schema_version: "1.0"
+project:
+  id: enterprise-squad-example
+  name: Enterprise Engineering Squad (example)
+  status: example
+  warning: "Replace all project context before operational use."
+  context_owner: squad-example
+  last_reviewed: null
+  default_language: pt-BR
+  catalog:
+    domains: .project/catalog/domains.example.yaml
+    systems: .project/catalog/systems.example.yaml
+    repositories: .project/catalog/repositories.example.yaml
+    interfaces: .project/catalog/interfaces.example.yaml
+    relations: .project/catalog/relations.example.yaml
+  policy_profiles:
+    quality: .project/quality-profile.md
+    security_and_compliance: .project/compliance.md
+    observability: .project/observability.md
+  project_agent_profiles: .project/agent-profiles
+  project_skills: .project/skills
+  project_workflows: []
+  delegation_limits:
+    max_depth: 1
+    max_parallel_tasks: 4
+    context_budget: runtime-and-task-specific
+    financial_or_tool_budget: project-defined

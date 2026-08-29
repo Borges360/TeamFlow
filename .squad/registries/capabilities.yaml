@@ -1,0 +1,29 @@
+schema_version: "1.0"
+capabilities:
+  - id: requirements-analysis
+    skill: .squad/skills/requirements-analysis.md
+    default_role: requirement-analyst
+  - id: architecture-decision
+    skill: .squad/skills/architecture-decision.md
+    default_role: solution-architect
+  - id: evidence-driven-testing
+    skill: .squad/skills/evidence-driven-testing.md
+    default_role: quality-engineer
+  - id: production-readiness
+    skill: .squad/skills/production-readiness.md
+    default_role: reliability-engineer
+  - id: threat-modeling
+    skill: .squad/skills/threat-modeling.md
+    default_role: security-engineer
+  - id: performance-analysis
+    skill: .squad/skills/performance-analysis.md
+    default_role: performance-engineer
+  - id: data-change-safety
+    skill: .squad/skills/data-change-safety.md
+    default_role: data-engineer
+  - id: progressive-repository-discovery
+    skill: .squad/skills/progressive-repository-discovery.md
+    default_role: lead
+  - id: incident-analysis
+    skill: .squad/skills/incident-analysis.md
+    default_role: reliability-engineer

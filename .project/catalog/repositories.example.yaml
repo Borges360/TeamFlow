@@ -1,0 +1,191 @@
+schema_version: "1.0"
+status: example
+warning: "Representative records only. Replace; do not use for writes."
+repositories:
+  - id: mobile-shell-example
+    name: mobile-shell-example
+    url: https://scm.invalid/example/mobile-shell
+    lifecycle: active
+    type: mobile
+    domains: [contracts]
+    systems: [contract-experience]
+    owners: { team: squad-example, technical: frontend-group-placeholder, business: product-owner-placeholder }
+    technologies: [mobile-webview]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [journey:contract-query], consumes: [web:contract-ui], produces: [], subscribes: [] }
+    dependencies: [contract-web-example]
+    deployments: [mobile-application-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-web-example
+    name: contract-web-example
+    url: https://scm.invalid/example/contract-web
+    lifecycle: active
+    type: frontend
+    domains: [contracts]
+    systems: [contract-experience]
+    owners: { team: squad-example, technical: frontend-group-placeholder, business: product-owner-placeholder }
+    technologies: [angular, react]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [web:contract-ui], consumes: [api:contract-query-v1], produces: [], subscribes: [] }
+    dependencies: [contract-api-example]
+    deployments: [web-runtime-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-api-example
+    name: contract-api-example
+    url: https://scm.invalid/example/contract-api
+    lifecycle: active
+    type: service
+    domains: [contracts]
+    systems: [contract-experience]
+    owners: { team: squad-example, technical: backend-group-placeholder, business: product-owner-placeholder }
+    technologies: [java, go, python, dynamodb, postgresql]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [api:contract-query-v1], consumes: [service:contract-record-v1], produces: [event:contract-query-audit-v1], subscribes: [] }
+    dependencies: [contract-ims-online-example]
+    deployments: [cloud-service-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-glue-example
+    name: contract-glue-example
+    url: https://scm.invalid/example/contract-glue
+    lifecycle: active
+    type: data
+    domains: [contracts, analytics]
+    systems: [contract-data-platform]
+    owners: { team: data-squad-placeholder, technical: data-group-placeholder, business: data-owner-placeholder }
+    technologies: [aws-glue, python, athena, s3]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [dataset:contract-analytics-v1], consumes: [event:contract-query-audit-v1], produces: [], subscribes: [event:contract-query-audit-v1] }
+    dependencies: [contract-catalog-example]
+    deployments: [data-platform-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-catalog-example
+    name: contract-catalog-example
+    url: https://scm.invalid/example/contract-catalog
+    lifecycle: active
+    type: configuration
+    domains: [contracts, analytics]
+    systems: [contract-data-platform]
+    owners: { team: data-squad-placeholder, technical: data-governance-placeholder, business: data-owner-placeholder }
+    technologies: [aws-glue-data-catalog, data-mesh]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [catalog:contract-datasets], consumes: [], produces: [], subscribes: [] }
+    dependencies: []
+    deployments: [data-catalog-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-terraform-example
+    name: contract-terraform-example
+    url: https://scm.invalid/example/contract-terraform
+    lifecycle: active
+    type: infrastructure
+    domains: [platform, contracts]
+    systems: [contract-platform-operations]
+    owners: { team: platform-team-placeholder, technical: cloud-platform-placeholder, business: product-owner-placeholder }
+    technologies: [terraform]
+    criticality: unknown
+    data_classification: internal
+    interfaces: { provides: [deployment:contract-cloud-resources], consumes: [], produces: [], subscribes: [] }
+    dependencies: []
+    deployments: [cloud-accounts-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-cloudformation-example
+    name: contract-cloudformation-example
+    url: https://scm.invalid/example/contract-cloudformation
+    lifecycle: active
+    type: infrastructure
+    domains: [platform, contracts]
+    systems: [contract-platform-operations]
+    owners: { team: platform-team-placeholder, technical: cloud-platform-placeholder, business: product-owner-placeholder }
+    technologies: [cloudformation]
+    criticality: unknown
+    data_classification: internal
+    interfaces: { provides: [deployment:contract-legacy-cloud-resources], consumes: [], produces: [], subscribes: [] }
+    dependencies: []
+    deployments: [cloud-accounts-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-observability-example
+    name: contract-observability-example
+    url: https://scm.invalid/example/contract-observability
+    lifecycle: active
+    type: observability
+    domains: [platform, contracts]
+    systems: [contract-platform-operations]
+    owners: { team: platform-team-placeholder, technical: sre-group-placeholder, business: product-owner-placeholder }
+    technologies: [datadog]
+    criticality: unknown
+    data_classification: internal
+    interfaces: { provides: [dashboard:contract-journey, monitors:contract-service], consumes: [telemetry:contract-platform], produces: [], subscribes: [] }
+    dependencies: [contract-api-example]
+    deployments: [datadog-account-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-tests-example
+    name: contract-tests-example
+    url: https://scm.invalid/example/contract-tests
+    lifecycle: active
+    type: test
+    domains: [contracts]
+    systems: [contract-platform-operations]
+    owners: { team: squad-example, technical: qa-group-placeholder, business: product-owner-placeholder }
+    technologies: [robot-framework, mobile-webview-automation, api-automation, accessibility-testing]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [evidence:contract-regression], consumes: [journey:contract-query, api:contract-query-v1], produces: [], subscribes: [] }
+    dependencies: [mobile-shell-example, contract-web-example, contract-api-example]
+    deployments: [test-environments-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-ims-online-example
+    name: contract-ims-online-example
+    url: https://scm.invalid/example/contract-ims-online
+    lifecycle: active
+    type: mainframe
+    domains: [contracts, mainframe]
+    systems: [contract-system-of-record]
+    owners: { team: mainframe-team-placeholder, technical: mainframe-online-placeholder, business: product-owner-placeholder }
+    technologies: [ims-online, db2]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [service:contract-record-v1], consumes: [], produces: [], subscribes: [] }
+    dependencies: []
+    deployments: [mainframe-lpar-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null
+  - id: contract-batch-example
+    name: contract-batch-example
+    url: https://scm.invalid/example/contract-batch
+    lifecycle: active
+    type: mainframe
+    domains: [contracts, mainframe]
+    systems: [contract-system-of-record]
+    owners: { team: mainframe-team-placeholder, technical: mainframe-batch-placeholder, business: product-owner-placeholder }
+    technologies: [ims-batch, db2, vsan-unconfirmed]
+    criticality: unknown
+    data_classification: unknown
+    interfaces: { provides: [batch:contract-reconciliation], consumes: [dataset:contract-input], produces: [dataset:contract-output], subscribes: [] }
+    dependencies: []
+    deployments: [mainframe-scheduler-placeholder]
+    local_instructions: AGENTS.md
+    metadata_source: example
+    last_verified: null

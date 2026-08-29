@@ -1,0 +1,52 @@
+schema_version: "1.0"
+status: example
+warning: "Illustrative direct relationships; replace and verify."
+relations:
+  - from: mobile-shell-example
+    type: embeds
+    to: contract-web-example
+    contract: web:contract-ui
+    owner: frontend-group-placeholder
+    last_verified: null
+  - from: contract-web-example
+    type: consumes
+    to: contract-api-example
+    contract: api:contract-query-v1
+    owner: backend-group-placeholder
+    last_verified: null
+  - from: contract-api-example
+    type: consumes
+    to: contract-ims-online-example
+    contract: service:contract-record-v1
+    owner: mainframe-online-placeholder
+    last_verified: null
+  - from: contract-api-example
+    type: emits
+    to: contract-glue-example
+    contract: event:contract-query-audit-v1
+    owner: data-group-placeholder
+    last_verified: null
+  - from: contract-glue-example
+    type: governed-by
+    to: contract-catalog-example
+    contract: catalog:contract-datasets
+    owner: data-governance-placeholder
+    last_verified: null
+  - from: contract-observability-example
+    type: observes
+    to: contract-api-example
+    contract: telemetry:contract-platform
+    owner: sre-group-placeholder
+    last_verified: null
+  - from: contract-tests-example
+    type: verifies
+    to: contract-web-example
+    contract: journey:contract-query
+    owner: qa-group-placeholder
+    last_verified: null
+  - from: contract-tests-example
+    type: verifies
+    to: contract-api-example
+    contract: api:contract-query-v1
+    owner: qa-group-placeholder
+    last_verified: null
