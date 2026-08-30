@@ -22,14 +22,15 @@ For every demand:
 
 1. Preserve the user's original demand verbatim in the demand artifact.
 2. Assign or derive a stable demand ID.
-3. Select a workflow using `.squad/policies/workflow-routing.md`. If selection is ambiguous, ask one blocking question or perform a short requirement-analysis pass; do not guess.
+3. Resolve an explicit or clearly matching operational playbook through `.squad/registries/playbooks.yaml`, then select its primary workflow using `.squad/policies/workflow-routing.md`. Load only the selected playbook. If selection materially remains ambiguous, ask one blocking question or perform a short requirement-analysis pass; do not guess.
 4. Create a minimal context bundle using `.squad/contracts/context-bundle.md`.
-5. Run the workflow phases in order. Parallelize only phases explicitly marked as parallel-safe.
-6. Activate conditional reviewers using `.squad/policies/risk-routing.md`, the blast radius, data classification, and project constraints.
-7. Persist decisions, open questions, outputs, and evidence under `deliveries/<demand-id>/` using `.squad/templates/delivery-index.md`.
-8. Evaluate every required gate using `.squad/policies/quality-gates.md`. A role may recommend; the documented gate criteria decide progression.
-9. Perform principal review with the greatest independence the runtime supports.
-10. Deliver only when the definition of done and evidence contract are satisfied.
+5. Before design or writes, inspect the target repository instructions and pipeline, then produce a change plan using `.squad/policies/change-impact.md` and `.squad/contracts/change-plan.md`. Identify the pieces likely to change, their owners, dependencies, tests, documentation, pipeline stages, integration order, and write boundary. For read-only work, record that no implementation pieces will change.
+6. Run the workflow phases in order and follow the target project's existing build/test/review/deployment pipeline when one exists. Parallelize only phases explicitly marked as parallel-safe.
+7. Activate conditional reviewers using `.squad/policies/risk-routing.md`, the blast radius, data classification, and project constraints.
+8. Persist decisions, open questions, outputs, and evidence locally under `deliveries/<demand-id>/` using `.squad/templates/delivery-index.md`. This directory is Git-ignored and must not be promoted to `release` or `main`; permanent project documentation belongs in its canonical repository or the owner repository's `docs/` fallback.
+9. Evaluate every required gate using `.squad/policies/quality-gates.md`. A role may recommend; the documented gate criteria decide progression.
+10. Perform principal review with the greatest independence the runtime supports.
+11. Deliver only when the definition of done and evidence contract are satisfied.
 
 ## Roles, delegation, and native runtimes
 
@@ -43,6 +44,12 @@ Agent files define responsibilities, not simulated personas or technology silos.
 - An author must not self-approve a mandatory independent review when another reviewer/runtime is available.
 
 Follow the runtime-specific mapping in `.squad/runtimes/`; these mappings adapt native features without reimplementing them.
+
+## Branch and project-pipeline alignment
+
+- For ordinary task implementation, prefer a dedicated `feature/<demand-id>-<short-name>` branch created from `develop` when that model exists in the target repository.
+- Repository-local branching rules, protected-branch policy, release trains, hotfix/incident procedures, and explicit user instructions take precedence. Record any deviation in the change plan.
+- Discover CI/CD definitions and required checks before implementation. Reproduce applicable stages locally where safe; do not bypass or replace the project's pipeline with squad-specific assumptions.
 
 ## User interaction
 

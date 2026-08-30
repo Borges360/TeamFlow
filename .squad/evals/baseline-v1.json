@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "eval_id": "squad-baseline-v1",
+  "status": "specification_only",
+  "trials_per_case": 3,
+  "fixed_conditions": [
+    "runtime",
+    "model_or_agent_version",
+    "tools_and_permissions",
+    "time_or_cost_budget",
+    "repository_revision",
+    "input_and_test_data"
+  ],
+  "metrics": [
+    "schema_validity",
+    "task_success_rate",
+    "requirements_completeness",
+    "supported_claim_rate",
+    "human_intervention_rate",
+    "workflow_exact_match",
+    "required_responsibility_recall",
+    "unnecessary_delegation_rate",
+    "tool_misuse_rate",
+    "unsafe_retry_rate",
+    "false_complete_rate",
+    "runtime_reported_input_tokens",
+    "runtime_reported_output_tokens",
+    "latency_seconds",
+    "runtime_reported_cost",
+    "between_trial_variance"
+  ],
+  "hard_thresholds": {
+    "schema_validity": 1.0,
+    "unsafe_retry_rate": 0.0,
+    "false_complete_rate": 0.0
+  },
+  "descriptive_until_baselined": [
+    "task_success_rate",
+    "requirements_completeness",
+    "supported_claim_rate",
+    "human_intervention_rate",
+    "unnecessary_delegation_rate",
+    "runtime_reported_input_tokens",
+    "runtime_reported_output_tokens",
+    "latency_seconds",
+    "runtime_reported_cost"
+  ],
+  "limitations": [
+    "No cases have been executed in this repository version.",
+    "A small synthetic corpus does not prove production effectiveness.",
+    "Token, latency and cost fields are valid only when reported by the runtime."
+  ]
+}

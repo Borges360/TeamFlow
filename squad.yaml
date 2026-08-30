@@ -2,7 +2,7 @@ schema_version: "1.0"
 kind: AgenticSquadInstructionTemplate
 metadata:
   id: universal-agentic-squad
-  version: 1.0.0
+  version: 1.2.0
 spec:
   entrypoint: AGENTS.md
   universal_base: .squad
@@ -10,4 +10,6 @@ spec:
   delivery_path_pattern: deliveries/<demand-id>
   manifest: .squad/manifest.yaml
   execution_model: native-development-agent-runtime
-
+  adoption:
+    mode: template
+    project_config: .project/project.example.yaml

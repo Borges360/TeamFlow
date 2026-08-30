@@ -4,7 +4,7 @@ Use the smallest context that enables a safe next decision. Large estates must n
 
 ## Context layers
 
-1. **Core:** demand, `AGENTS.md`, project context/constraints, selected workflow.
+1. **Core:** demand, `AGENTS.md`, project context/constraints, selected playbook (when applicable), and selected workflow.
 2. **Seed:** systems/repositories explicitly named by the demand or catalog lookup.
 3. **Neighbor:** owners, contracts, dependencies, consumers, data and runtime relationships of seeds.
 4. **Deep:** repository-local source, histories, runbooks, dashboards, schemas, ADRs, or operational evidence needed for a specific question.
@@ -19,6 +19,7 @@ Load the next layer only when the current layer identifies a decision or risk th
 - Summarize large documents with links; preserve exact contract clauses needed for decisions.
 - Refresh the bundle after scope or blast-radius changes.
 - Do not expose context to a delegate that is not needed or not permitted.
+- Keep only playbook registry metadata persistent; load the full text of the selected playbook and discard it after the demand.
 
 ## Context budget
 

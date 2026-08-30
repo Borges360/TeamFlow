@@ -2,6 +2,8 @@
 
 This directory demonstrates how one enterprise squad could configure the universal base. It is not production truth and does not claim that every listed technology is present in every demand.
 
+For active adoption, create `.project/project.yaml` from `project.example.yaml`, set `status: active`, provide owner/review date, replace referenced `.example` catalog paths with real paths, update `squad.yaml` adoption mode/path, and run `python scripts/validate-template.py --mode active`.
+
 ## Replace before use
 
 - real project/domain purpose and vocabulary;

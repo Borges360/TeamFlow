@@ -20,6 +20,21 @@ project:
   project_agent_profiles: .project/agent-profiles
   project_skills: .project/skills
   project_workflows: []
+  project_gates: []
+  workspace:
+    checkout_root: runtime-managed
+    allow_reuse_clean_checkout: true
+  branching:
+    preferred_base: develop
+    feature_pattern: feature/{demand_id}-{slug}
+    repository_rules_take_precedence: true
+  documentation:
+    repository_id: null
+    fallback_root: docs
+    adr_path: docs/architecture/decisions
+  delivery_records:
+    path: deliveries
+    git_ignored: true
   delegation_limits:
     max_depth: 1
     max_parallel_tasks: 4

@@ -189,3 +189,23 @@ repositories:
     local_instructions: AGENTS.md
     metadata_source: example
     last_verified: null
+  - id: engineering-docs-example
+    name: engineering-docs-example
+    url: https://scm.invalid/example/engineering-docs
+    lifecycle: active
+    type: documentation
+    domains: [shared-engineering]
+    systems: [engineering-governance]
+    owners: { team: architecture-placeholder, technical: platform-placeholder, business: engineering-owner-placeholder }
+    technologies: [markdown]
+    criticality: unknown
+    data_classification: internal
+    interfaces: { provides: [documentation:shared-architecture], consumes: [], produces: [], subscribes: [] }
+    dependencies: []
+    deployments: []
+    local_instructions: AGENTS.md
+    default_branch: develop
+    documentation_role: canonical-shared
+    access_expectation: read-write-requested
+    metadata_source: example
+    last_verified: null

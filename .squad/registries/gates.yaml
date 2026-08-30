@@ -1,0 +1,44 @@
+schema_version: "1.0"
+gates:
+  - id: requirement
+    applicability: conditional
+    accountable_role: requirement-analyst
+  - id: context
+    applicability: conditional
+    accountable_role: lead
+  - id: architecture
+    applicability: conditional
+    accountable_role: solution-architect
+  - id: security
+    applicability: conditional
+    accountable_role: security-engineer
+  - id: quality
+    applicability: conditional
+    accountable_role: quality-engineer
+  - id: production-readiness
+    applicability: conditional
+    accountable_role: reliability-engineer
+  - id: data
+    applicability: conditional
+    accountable_role: data-engineer
+  - id: performance
+    applicability: conditional
+    accountable_role: performance-engineer
+  - id: platform
+    applicability: conditional
+    accountable_role: platform-engineer
+  - id: accessibility
+    applicability: conditional
+    accountable_role: quality-engineer
+  - id: compliance
+    applicability: conditional
+    accountable_role: security-engineer
+  - id: mainframe
+    applicability: conditional
+    accountable_role: project-defined
+  - id: principal-review
+    applicability: always
+    accountable_role: principal-reviewer
+  - id: delivery
+    applicability: always
+    accountable_role: lead

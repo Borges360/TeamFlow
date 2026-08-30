@@ -1,0 +1,17 @@
+{
+  "repository_id": "customer-api",
+  "classification": "changed",
+  "reason": "owns requested behavior",
+  "owner": "customer-platform",
+  "remote_verified": true,
+  "write_authorized": true,
+  "base_branch": "develop",
+  "base_revision": "abc123",
+  "working_branch": "feature/DEM-123-change",
+  "planned_paths": ["src", "tests", "docs"],
+  "pipeline_definition": ".github/workflows/validate.yml",
+  "required_stages": ["build", "unit"],
+  "remote_only_stages": [],
+  "integration_order": 1,
+  "rollback": "revert unmerged branch commit"
+}

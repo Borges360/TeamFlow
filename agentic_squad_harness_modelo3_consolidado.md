@@ -1,5 +1,7 @@
 # Documentação consolidada — Squad Agêntica Modelo 3
 
+> **HISTORICAL / SUPERSEDED DESIGN.** Este documento é mantido apenas como contexto histórico e descreve uma direção anterior baseada em orquestrador/plataforma. Ele não é uma fonte ativa de instruções. A fonte de verdade atual é `AGENTS.md` + `.squad/`, especializada por `.project/`; em qualquer conflito, essas fontes prevalecem. Não carregue este documento no contexto operacional normal.
+
 
 ---
 

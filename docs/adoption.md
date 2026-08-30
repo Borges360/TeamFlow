@@ -20,10 +20,22 @@ Define gate applicability, risk/severity thresholds, evidence retention, human a
 
 Point the runtime's project instruction mechanism to `AGENTS.md`. Use its native agents/tasks and tools. A thin runtime-specific pointer file is acceptable; a custom orchestrator is not required.
 
-## 6. Trial and review
+Set `squad.yaml` adoption mode to `active`, point it to `.project/project.yaml`, and run `python scripts/validate-template.py --mode active`.
+
+## 6. Align branch and project pipeline
+
+Document the repository's branch model and CI/CD workflow. When the project supports `develop`, prefer one `feature/<demand-id>-<short-name>` branch per task. Repository-local GitFlow, trunk-based, release-train, hotfix and protected-branch rules take precedence.
+
+Before implementation, inspect the project's pipeline definitions and record applicable build, lint, test, security, packaging, deployment and approval stages in the change plan. The squad follows that pipeline; it does not replace or bypass it.
+
+## 7. Trial and review
 
 Run one feature, bugfix, and review-only demand. Inspect context size, questions, artifacts, evidence, gate decisions, and repository discovery. Improve declarative files before considering helper code.
+
+The first implementation artifact after context is a change plan identifying affected/changed pieces, tests, documentation, pipeline and integration order. Start with a small reversible single-repository pilot. See [start.md](../start.md).
 
 ## Update rule
 
 Put reusable behavior in `.squad/`; put factual/local configuration in `.project/`; put repository-specific implementation rules in that repository. Add executable scripts only for concrete validation or collection that documentation cannot perform.
+
+Create a squad-template release only when reusable structure, mandatory behavior or contracts change. Project deliveries and local `.project/` updates do not create a squad release; application releases follow the application's pipeline.

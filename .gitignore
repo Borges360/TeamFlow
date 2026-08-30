@@ -6,9 +6,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Local discovery caches and temporary agent scratch space.
+# Local discovery caches, delivery records, and temporary agent scratch space.
 .agent-cache/
-deliveries/*/scratch/
-
-# Keep delivery artifacts versionable by default. Projects may override this.
-
+/deliveries/

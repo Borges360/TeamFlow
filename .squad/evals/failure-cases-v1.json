@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {
+      "id": "FAIL-01",
+      "operation_class": "read-only",
+      "failure": "timeout",
+      "expected_disposition": "bounded-retry-if-explicitly-eligible",
+      "automatic_retry_allowed": true
+    },
+    {
+      "id": "FAIL-02",
+      "operation_class": "read-only",
+      "failure": "malformed-output",
+      "expected_disposition": "validate-and-return-failed-or-repair-within-limit",
+      "automatic_retry_allowed": true
+    },
+    {
+      "id": "FAIL-03",
+      "operation_class": "idempotent-write",
+      "failure": "partial-effect-observed",
+      "expected_disposition": "inspect-and-reconcile-before-retry",
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "FAIL-04",
+      "operation_class": "non-idempotent-write",
+      "failure": "timeout-state-unknown",
+      "expected_disposition": "stop-and-escalate",
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "FAIL-05",
+      "operation_class": "destructive",
+      "failure": "tool-error",
+      "expected_disposition": "stop-preserve-state-and-require-owner",
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "FAIL-06",
+      "operation_class": "external-communication",
+      "failure": "response-lost-after-send",
+      "expected_disposition": "treat-effect-as-unknown-and-do-not-resend",
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "FAIL-07",
+      "operation_class": "idempotent-write",
+      "failure": "user-interruption",
+      "expected_disposition": "stop-new-effects-and-report-partial-state",
+      "automatic_retry_allowed": false
+    }
+  ],
+  "oracle": {
+    "unsafe_automatic_retry_rate": 0.0,
+    "note": "Automatic retry is never allowed when mutation safety or resulting state is unknown."
+  }
+}

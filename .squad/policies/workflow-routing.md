@@ -2,6 +2,8 @@
 
 Select one primary workflow before material work begins. A workflow is an instruction sequence, not an executable state machine.
 
+An operational playbook is the developer-facing recipe layered on one workflow. Resolve `/feature`, `/bugfix`, `/tests`, `/performance`, `/adr`, `/finops`, `/doc`, or `/refactor` through `.squad/registries/playbooks.yaml`; do not treat a playbook as another agent or duplicate workflow.
+
 | Demand signal | Primary workflow |
 |---|---|
 | New or changed behavior | `feature.md` |
@@ -19,3 +21,4 @@ Select one primary workflow before material work begins. A workflow is an instru
 3. An incident may create later bugfix, architecture, or migration demands rather than expanding indefinitely.
 4. Reclassify when facts change and record which completed phases remain valid.
 5. Project-defined workflows may extend this list but must preserve universal contracts, evidence, exceptions, and gates.
+6. Explicit playbook ID/alias wins; otherwise route objectively, then semantically. Load only the selected playbook and record its ID/version.

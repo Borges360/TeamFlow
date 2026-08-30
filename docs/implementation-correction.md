@@ -31,7 +31,7 @@ The previous implementation treated the specification as a Python application. T
 | `src/agentic_squad/config/__init__.py` | expose configuration package | `.squad/` universal base and `.project/` configuration convention |
 | `src/agentic_squad/config/loader.py` | load/merge base and overlays | documented precedence and native file reading; project context is separate rather than materialized |
 | `src/agentic_squad/config/registry.py` | Python registry of agents/workflows/skills | declarative YAML files in `.squad/registries/` |
-| `src/agentic_squad/config/validation.py` | validate executable configuration | `.squad/manifest.yaml` plus optional `scripts/validate-template.py` |
+| `src/agentic_squad/config/validation.py` | validate executable configuration | `.squad/manifest.yaml` plus optional `scripts/validate-template.py --mode template|active` |
 
 ## Domain and policies
 

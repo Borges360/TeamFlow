@@ -14,4 +14,10 @@ jobs:
         with:
           python-version: "3.x"
       - name: Validate template structure
-        run: python scripts/validate-template.py
+        run: python scripts/validate-template.py --mode template
+      - name: Validate declarative eval specifications
+        run: python scripts/validate-evals.py
+      - name: Validate operational playbooks
+        run: python scripts/validate-playbooks.py
+      - name: Run validator unit tests
+        run: python -m unittest discover -s scripts/tests -v
