@@ -5,6 +5,13 @@ __pycache__/
 .coverage
 .DS_Store
 Thumbs.db
+node_modules/
+coverage/
+*.tgz
+npm-debug.log*
+.env
+.env.*
+!.env.example
 
 # Local discovery caches, delivery records, and temporary agent scratch space.
 .agent-cache/

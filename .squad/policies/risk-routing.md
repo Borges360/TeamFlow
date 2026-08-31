@@ -25,3 +25,4 @@ At intake and after context discovery, record impact, reversibility, criticality
 2. Unavailable specialist capacity does not make a gate inapplicable. Use an approved reviewer, disclose the limitation, or stop.
 3. Multiple reviews may run in parallel after their shared requirements/context are stable.
 4. Record why each conditional gate is applicable or not applicable.
+5. After determining required responsibilities, compare them with the active project's immutable `agents_snapshot`. An unavailable agent never changes gate applicability: request explicit installation plus project snapshot update, route to an authorized human reviewer, or return `BLOCKED`. Record the missing profile and resolution before the affected phase proceeds.

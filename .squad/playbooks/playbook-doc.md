@@ -1,12 +1,12 @@
 ---
-{"schema_version":"1.0","id":"doc","version":"1.0","aliases":["docs"],"workflow":"feature","side_effect_class":"repository-write","permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
+{"schema_version":"1.1","id":"doc","name":"Documentation","version":"1.0","optional_invocation":true,"aliases":["docs"],"path":".squad/playbooks/playbook-doc.md","primary_workflow":"feature","side_effect_class":"repository-write","invocation_examples":["Use o playbook doc para atualizar a documentação."],"always_required":{"roles":[],"artifacts":[],"gates":[]},"conditional_activation":[],"outputs":[],"stop_conditions":[],"permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
 ---
 # Playbook: doc
 
 ## Purpose
 Create or update permanent project documentation in its canonical repository.
 ## When to use
-Use `/doc <objective>` for setup, development, API, architecture, operations, troubleshooting, runbooks or references.
+Use the `doc` playbook for setup, development, API, architecture, operations, troubleshooting, runbooks or references.
 ## Do not use when
 Do not place permanent project knowledge only in `deliveries/` or copy unsupported behavior.
 ## Inputs and autonomous discovery

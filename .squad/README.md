@@ -4,7 +4,7 @@ This directory is the vendor-neutral, reusable source of truth for the squad ope
 
 Files here define responsibilities, processes, contracts, policies, procedures, artifact templates, and specification-only eval cases. They do not implement agents or execute workflows. The active development tool provides execution.
 
-`.squad/playbooks/` contains the eight developer-facing, load-on-demand operational recipes registered in `.squad/registries/playbooks.yaml`.
+`.squad/playbooks/` contains nine optional developer-facing, load-on-demand operational recipes registered in `.squad/registries/playbooks.yaml`. Workflows remain usable through semantic routing without a playbook.
 
 Project-specific technologies, repositories, owners, architecture, business rules, compliance, and exceptions belong in `.project/`.
 

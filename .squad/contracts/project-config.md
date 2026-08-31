@@ -1,6 +1,6 @@
 # Contract: Project Configuration
 
-The `.project/` directory supplies replaceable context for one squad/project while `.squad/` remains reusable.
+The legacy `.project/` directory is a distributed example only. Active local configuration lives outside checkouts at `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/project-config.yaml`, while `.squad/` remains the installed reusable base.
 
 ## Required project information
 
@@ -62,3 +62,6 @@ project:
 - Local configuration cannot silently weaken universal policies; deviations use the exception/governance process.
 - `runtime-managed` keeps product checkouts outside this template. Documentation uses the configured repository when present, otherwise the owner repository convention or `docs/` fallback.
 - `delivery_records.path` is runtime-local and Git-ignored. It is not a documentation repository and must not be promoted to squad release branches.
+- A project is never global: its `team_id` must match the containing team and all project commands resolve through the active team.
+- `team_snapshot` and `agents_snapshot` are captured at creation. Team changes cannot mutate them; comparison/update is explicit, attributed, backed up in history and content-addressed.
+- Effective context, generated runtime files, deliveries, evidence and history remain under the private project root and are not copied into product repositories by default.

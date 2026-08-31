@@ -1,0 +1,65 @@
+name: Publish npm package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish-npm:
+    if: ${{ !github.event.release.draft && !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out the immutable release tag
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+      - name: Validate tag format, annotation and protected main ancestry
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "Invalid release tag: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = "tag"
+          git fetch --no-tags origin main
+          git merge-base --is-ancestor HEAD origin/main
+      - name: Use a Trusted Publishing compatible Node/npm runtime
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24.14.0"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+      - name: Use Python for the complete repository pipeline
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.x"
+      - name: Install package metadata without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Verify release tag and version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: npm run release:verify -- "$RELEASE_TAG"
+      - name: Run release checks
+        run: npm run check
+      - name: Run the complete template validation pipeline
+        run: |
+          python scripts/validate-template.py --mode template
+          python scripts/validate-evals.py
+          python scripts/validate-playbooks.py
+          python -m unittest discover -s scripts/tests -v
+      - name: Inspect the package that will be published
+        run: npm pack --dry-run
+      - name: Install and execute the packed tarball in a clean directory
+        run: npm run test:package
+      - name: Publish with npm Trusted Publishing and provenance
+        run: npm publish --access public --provenance

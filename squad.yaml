@@ -2,14 +2,15 @@ schema_version: "1.0"
 kind: AgenticSquadInstructionTemplate
 metadata:
   id: universal-agentic-squad
-  version: 1.2.0
+  version: 0.1.1
 spec:
   entrypoint: AGENTS.md
-  universal_base: .squad
-  project_context: .project
-  delivery_path_pattern: deliveries/<demand-id>
-  manifest: .squad/manifest.yaml
+  universal_base: TEAMFLOW_HOME/metadata/bases/<package-version>/.squad
+  project_context: TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/effective-context
+  delivery_path_pattern: TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>
+  manifest: TEAMFLOW_HOME/metadata/bases/<package-version>/.squad/manifest.yaml
   execution_model: native-development-agent-runtime
   adoption:
     mode: template
+    # Legacy distributed example; active runtime uses TEAMFLOW_HOME project-config.
     project_config: .project/project.example.yaml

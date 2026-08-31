@@ -1,12 +1,12 @@
 ---
-{"schema_version":"1.0","id":"feature","version":"1.0","aliases":["feat"],"workflow":"feature","side_effect_class":"repository-write","permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
+{"schema_version":"1.1","id":"feature","name":"Feature","version":"1.0","optional_invocation":true,"aliases":["feat"],"path":".squad/playbooks/playbook-feature.md","primary_workflow":"feature","side_effect_class":"repository-write","invocation_examples":["Use o playbook feature para implementar a solução.","Use .squad/playbooks/playbook-feature.md.","Implemente a funcionalidade solicitada."],"always_required":{"roles":[],"artifacts":[],"gates":[]},"conditional_activation":[],"outputs":[],"stop_conditions":[],"permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
 ---
 # Playbook: feature
 
 ## Purpose
 Implement new or changed functional behavior with verifiable acceptance criteria.
 ## When to use
-Use `/feature <objective>` for a capability or intentional behavior change.
+Use the `feature` playbook for a capability or intentional behavior change.
 ## Do not use when
 Use bugfix for incorrect existing behavior and refactor for behavior-preserving restructuring.
 ## Inputs and autonomous discovery

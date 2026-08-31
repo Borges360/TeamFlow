@@ -6,6 +6,36 @@ The repository is intentionally documentation and configuration first. Codex, Cl
 
 MCP and A2A are not implemented in this version.
 
+## Setup rápido com npx
+
+O pacote npm expõe a CLI local `teamflow`. Ela cria times reutilizáveis e projetos isolados no diretório privado do usuário, sem fork, banco, serviço, credenciais ou clone de repositórios de produto.
+
+Pré-requisitos: Node.js 22.14 ou superior, npm e Git disponíveis no `PATH`.
+
+```bash
+npx teamflow setup
+```
+
+No Windows, o local padrão é `%USERPROFILE%\.teamFlow`; no macOS e Linux, `$HOME/.teamFlow`. Use `TEAMFLOW_HOME` ou `--home <path>` para uma sobrescrita explícita.
+
+O wizard toma no máximo quatro decisões principais: time, Git/commits, agents disponíveis e primeiro projeto opcional. Também há modos retomável, idempotente, dry-run e não interativo:
+
+```bash
+teamflow setup --resume
+teamflow setup --dry-run
+teamflow setup --non-interactive --config setup.json
+```
+
+Times são a fronteira de isolamento. Não existe projeto global: antes de listar, ativar ou alterar um projeto, selecione seu time.
+
+```bash
+teamflow team use comprovantes
+teamflow project create filtros-comprovante
+teamflow project activate filtros-comprovante
+```
+
+Consulte [CLI local, times e projetos](docs/local-teams-cli.md) para comandos, layout, snapshots, agents, exportação e política `ready_for_push`. Os comandos legados `install`/`update` continuam disponíveis para checkouts de releases Git imutáveis e nunca descartam alterações locais; veja [distribuição npm e segurança](docs/npm-distribution.md).
+
 ## What is universal and what is contextual
 
 ```text
@@ -27,7 +57,7 @@ Everything in `.squad/` is designed to work for any engineering squad. Everythin
 ├── .squad/
 │   ├── agents/                       responsibility definitions
 │   ├── workflows/                    feature, bugfix, incident, architecture, migration, performance
-│   ├── playbooks/                    eight load-on-demand developer recipes
+│   ├── playbooks/                    nine optional load-on-demand recipes
 │   ├── policies/                     routing, context, delegation, gates, evidence, governance
 │   ├── contracts/                    portable task/result/artifact/user-input contracts
 │   ├── skills/                       load-on-demand engineering procedures
@@ -45,13 +75,13 @@ Everything in `.squad/` is designed to work for any engineering squad. Everythin
 
 ## Como utilizar
 
-O template é usado pelo agente de desenvolvimento que você já utiliza. Não há serviço para iniciar, banco para configurar ou CLI obrigatória.
+O modelo é usado pelo agente de desenvolvimento que você já utiliza. Não há serviço para iniciar, banco para configurar ou runtime próprio. A CLI local organiza times e projetos, mas não executa a implementação.
 
-Para o caminho completo — preparar um projeto existente, compor responsabilidades pela stack real, criar a primeira branch, mapear peças afetadas, seguir a pipeline e executar o piloto — consulte [start.md](start.md).
+Para o caminho completo — preparar um projeto existente, compor responsabilidades pela stack real, criar a primeira branch, mapear peças afetadas, seguir a pipeline e executar o piloto — consulte [start.md](start.md). A CLI é somente uma conveniência de distribuição; o modelo operacional continua independente de Node em runtime.
 
 ### 1. Preparar o contexto do projeto
 
-Copie a base para o repositório coordenador da squad ou do projeto. Em seguida, substitua o conteúdo marcado como `EXAMPLE` em `.project/` por informações revisadas e rastreáveis.
+Execute `teamflow setup`. A configuração reutilizável fica em `teams/<team-id>/` e cada implementação fica em `teams/<team-id>/projects/<project-id>/`, sempre fora do checkout de produto. Evolua o time ativo com `team configure`, `team agents` e `catalog`.
 
 Comece por estes arquivos:
 
@@ -86,15 +116,15 @@ Implemente a nova funcionalidade de consulta de contratos.
 Também é possível ser explícito quando desejado:
 
 ```text
-Siga o AGENTS.md. Use o contexto de .project, carregue repositórios
-progressivamente e registre os artefatos em deliveries/DEM-001.
+Siga o AGENTS.md. Use o contexto efetivo do projeto ativo, carregue repositórios
+progressivamente e registre artefatos apenas no diretório privado desse projeto.
 
 Demanda: corrija a consulta de contratos que retorna dados desatualizados.
 ```
 
 O segundo formato é opcional: um runtime corretamente configurado já lê `AGENTS.md`.
 
-Use atalhos operacionais quando preferir: `/feature`, `/bugfix`, `/tests`, `/performance`, `/adr`, `/finops`, `/doc` ou `/refactor`. O texto completo de somente um playbook é carregado sob demanda; workspace, branch, pipeline e documentação seguem as políticas comuns.
+Playbooks são opcionais. Você pode escrever “Use o playbook feature”, referenciar `.squad/playbooks/playbook-feature.md` ou enviar somente a demanda em linguagem natural. O workflow continua sendo a fonte de verdade e o roteamento semântico funciona sem playbook. Formas como `/feature` são apenas atalhos textuais de prompt, não comandos nativos do shell/runtime. O catálogo também inclui o discovery técnico opcional.
 
 ### 4. O que o agente fará
 
@@ -114,11 +144,11 @@ Por exemplo, uma mudança apenas de interface pode ativar Software, Quality e Ac
 
 ### 5. Onde acompanhar o trabalho
 
-Para cada demanda, o agente cria localmente `deliveries/<demand-id>/` no projeto adotante. O diretório é ignorado pelo Git e não segue para branches de release; `delivery-index.md` aponta para requisitos, contexto, tarefas, decisões, evidências, gates, revisão e resumo. Documentação permanente é gravada no repositório canônico ou em `docs/` do repositório proprietário.
+Para cada demanda, os registros ficam em `%USERPROFILE%\.teamFlow\teams\<team-id>\projects\<project-id>\deliveries\` no Windows (ou no home equivalente), nunca no checkout de produto. Documentação permanente é gravada no repositório canônico ou em `docs/` do repositório proprietário.
 
 O trabalho só deve ser apresentado como concluído quando os gates aplicáveis estiverem resolvidos e as evidências estiverem vinculadas. Se faltarem regra de negócio, autoridade, acesso ou contexto, o agente deve retornar `NEEDS_USER_INPUT` ou `BLOCKED` com a pergunta e o impacto.
 
-Não há pacote Python, serviço, scheduler, banco de dados, máquina de estados, runtime próprio ou CLI obrigatória envolvidos.
+Não há pacote Python, serviço, scheduler, banco de dados, máquina de estados ou runtime próprio envolvidos. A CLI npm gerencia apenas estado local e arquivos; o teamFlow continua sendo documentação e configuração consumidas pelo runtime nativo do agente.
 
 ## Adoption
 

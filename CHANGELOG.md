@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.1.1 - 2026-08-30
+
+- Added the local `teamflow setup` wizard with resume, dry-run, non-interactive configuration, Portuguese defaults and agent presets.
+- Added private cross-platform `TEAMFLOW_HOME` storage with isolated teams/projects, active-state boundaries, snapshots, explicit updates, history, archive, export and migration backups.
+- Added team/project/agent/catalog/doctor commands, journey catalog support and formal local Git delivery/`ready_for_push` policy without remote operations.
+- Made playbooks explicitly optional, standardized `playbook-*.md` names, added technical discovery and preserved semantic workflow routing without playbook invocation.
+- Added filesystem integration, isolation, agent snapshot, migration and remote-operation policy tests.
+
+This change prepares only a local `release/0.1.1` branch. It does not push, create a tag/GitHub Release/PR, merge, publish npm, or deploy.
+
+## 0.1.0 - 2026-08-30
+
+- Added the zero-runtime-dependency `teamflow` npm CLI for deterministic installation and safe updates from immutable Git release tags.
+- Added origin, annotated-tag, clean-working-tree, downgrade, idempotency, and rollback protections.
+- Added cross-platform Node tests, npm package dry-runs, clean tarball smoke tests, and release/version verification.
+- Added a GitHub Actions npm release workflow prepared for Trusted Publishing with OIDC and provenance.
+- Documented the install/update model, release procedure, supply-chain risks, and prioritized follow-up opportunities.
+- Aligned product, CLI, npm package, squad manifest, and release tag versioning at `0.1.0`.
+
+No npm publication, Git tag, GitHub Release, push, merge, or deployment is performed by this change.
+
+### Historical pre-release structural revisions
+
+The entries below used an internal structural-version series before the public
+teamFlow release line was consolidated under `v0.x` tags and npm package versions.
+
 ## 1.2.0 - 2026-08-30
 
 - Added the reusable `/feature`, `/bugfix`, `/tests`, `/performance`, `/adr`, `/finops`, `/doc`, and `/refactor` playbooks.

@@ -5,9 +5,10 @@ The user should be able to open a development agent and state a demand in natura
 ## Runtime-neutral prompt
 
 ```text
-Follow AGENTS.md and the selected .squad workflow. Treat .project as project
-context, load repositories progressively, use native delegation where useful,
-and keep artifacts under deliveries/<demand-id>.
+Follow the AGENTS.md from the active project's cached base and selected workflow.
+Treat its effective-context as project context, load repositories progressively,
+use native delegation where useful, and keep artifacts only under the active
+private project root's deliveries/<demand-id>.
 
 Demand: Implemente a nova funcionalidade de consulta de contratos.
 ```

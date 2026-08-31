@@ -1,5 +1,5 @@
 schema_version: "1.0"
-template_version: 1.2.0
+template_version: 0.1.1
 entrypoint: AGENTS.md
 execution_model: native-development-agent-runtime
 required_directories:
@@ -16,10 +16,29 @@ required_directories:
   - .project
   - .project/catalog
   - docs
+  - bin
+  - src
+  - test
   - scripts
+  - scripts/package
 required_files:
   - AGENTS.md
   - README.md
+  - package.json
+  - package-lock.json
+  - bin/teamflow.js
+  - src/cli.js
+  - src/bundled.js
+  - src/config.js
+  - src/errors.js
+  - src/git.js
+  - src/process.js
+  - src/version.js
+  - src/storage.js
+  - src/commands/install.js
+  - src/commands/local.js
+  - src/commands/shared.js
+  - src/commands/update.js
   - squad.yaml
   - .squad/README.md
   - .squad/agents/requirement-analyst.md
@@ -40,14 +59,15 @@ required_files:
   - .squad/workflows/migration.md
   - .squad/workflows/performance-audit.md
   - .squad/playbooks/README.md
-  - .squad/playbooks/feature.md
-  - .squad/playbooks/bugfix.md
-  - .squad/playbooks/tests.md
-  - .squad/playbooks/performance.md
-  - .squad/playbooks/adr.md
-  - .squad/playbooks/finops.md
-  - .squad/playbooks/doc.md
-  - .squad/playbooks/refactor.md
+  - .squad/playbooks/playbook-feature.md
+  - .squad/playbooks/playbook-bugfix.md
+  - .squad/playbooks/playbook-tests.md
+  - .squad/playbooks/playbook-technical-discovery.md
+  - .squad/playbooks/playbook-performance.md
+  - .squad/playbooks/playbook-adr.md
+  - .squad/playbooks/playbook-finops.md
+  - .squad/playbooks/playbook-doc.md
+  - .squad/playbooks/playbook-refactor.md
   - .squad/policies/workflow-routing.md
   - .squad/policies/risk-routing.md
   - .squad/policies/delegation.md
@@ -69,6 +89,8 @@ required_files:
   - .squad/policies/structured-outputs.md
   - .squad/policies/repository-workspace.md
   - .squad/policies/documentation-routing.md
+  - .squad/policies/local-storage.md
+  - .squad/policies/git-delivery.md
   - .squad/contracts/task.md
   - .squad/contracts/result.md
   - .squad/contracts/artifact.md
@@ -79,6 +101,7 @@ required_files:
   - .squad/contracts/context-bundle.md
   - .squad/contracts/repository-catalog.md
   - .squad/contracts/project-config.md
+  - .squad/contracts/team-config.md
   - .squad/contracts/change-plan.md
   - .squad/contracts/execution-record.md
   - .squad/contracts/status-vocabulary.md
@@ -89,6 +112,7 @@ required_files:
   - .squad/contracts/repository-plan.md
   - .squad/contracts/documentation-target.md
   - .squad/contracts/multi-repository-result.md
+  - .squad/contracts/journey.md
   - .squad/skills/README.md
   - .squad/registries/capabilities.yaml
   - .squad/registries/workflows.yaml
@@ -128,6 +152,10 @@ required_files:
   - docs/architecture.md
   - docs/adoption.md
   - docs/using-with-runtimes.md
+  - docs/npm-distribution.md
+  - docs/opportunities.md
+  - docs/local-teams-cli.md
+  - .github/workflows/release.yml
   - docs/multi-repository-estates.md
   - docs/implementation-correction.md
   - start.md
@@ -137,3 +165,12 @@ required_files:
   - scripts/validate-playbooks.py
   - scripts/tests/test_validators.py
   - scripts/tests/test_playbooks.py
+  - scripts/package/check-versions.mjs
+  - scripts/package/check-runtime.mjs
+  - scripts/package/test-packed-package.mjs
+  - scripts/package/verify-release.mjs
+  - test/helpers.js
+  - test/install.test.js
+  - test/update.test.js
+  - test/version-and-cli.test.js
+  - test/teamflow-local.test.js

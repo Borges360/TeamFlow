@@ -1,4 +1,6 @@
-# Plano de implementação — playbooks operacionais e estrutura multi-repositório
+# Plano histórico — playbooks operacionais e estrutura multi-repositório
+
+> Superseded in 0.1.1 by the optional nine-playbook catalog, standardized `playbook-*.md` paths, semantic workflow routing and technical discovery in `.squad/playbooks/README.md`. Eight-playbook paths/counts below remain historical design evidence.
 
 - Status: `implemented` no template `1.2.0`
 - Natureza: manutenção estrutural do produto squad-agentica; não é um delivery de projeto.

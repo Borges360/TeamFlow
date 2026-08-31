@@ -4,6 +4,8 @@
 
 New or changed behavior must be designed, implemented, tested, and delivered.
 
+This workflow is self-sufficient. A natural-language demand can route here without naming a playbook; an optional feature playbook only makes the composition easier to discover.
+
 ## Flow
 
 `Demand → Requirements → Context → Change plan & project pipeline → Architecture → Specialist reviews → Implementation → QA → Production readiness → Principal review → Delivery`
@@ -35,6 +37,8 @@ Specialist reviews may run in parallel after requirements and initial architectu
 - Update the context bundle when new repositories or risks enter scope.
 - Re-run affected gates after a material design or scope change.
 - Treat documentation, rollout, rollback, observability, and evidence as delivery work.
+- Before each risk review, verify that the accountable profile exists in the active project's agent snapshot. If absent, request installation/update, use an authorized human reviewer, or stop as `BLOCKED`; never mark the gate not applicable because the profile is unavailable.
+- When documentation contains mutually exclusive alternatives and neither an accepted option nor sufficient decision criteria are present, ask which solution to implement or route to optional technical discovery. Never select by agent preference.
 
 ## Exit criteria
 

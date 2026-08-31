@@ -5,12 +5,15 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
-  validate:
+  validate-template:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.x"
       - name: Validate template structure
@@ -21,3 +24,41 @@ jobs:
         run: python scripts/validate-playbooks.py
       - name: Run validator unit tests
         run: python -m unittest discover -s scripts/tests -v
+
+  validate-cli:
+    name: Validate CLI (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22.14.0"
+          package-manager-cache: false
+      - name: Install the declared npm runtime
+        run: npm install --global npm@11.9.0
+      - name: Install package metadata without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Check versions and run CLI tests
+        run: npm run check
+
+  validate-package:
+    runs-on: ubuntu-latest
+    needs: [validate-template, validate-cli]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Install package metadata without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Inspect npm package
+        run: npm pack --dry-run
+      - name: Validate npm publish lifecycle without publishing
+        run: npm publish --dry-run
+      - name: Install and execute the packed tarball in a clean directory
+        run: npm run test:package

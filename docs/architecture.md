@@ -3,8 +3,8 @@
 The architecture is deliberately two-layered:
 
 ```text
-Universal squad model                 Project/domain configuration
-AGENTS.md + .squad/            +      .project/
+Cached immutable squad base            Project/domain configuration
+AGENTS.md + .squad/            +      TEAMFLOW_HOME/teams/.../effective-context/
 roles, workflows, policies,           catalog, ownership, stack,
 contracts, skills, templates          constraints, domain profiles
                     ↓
@@ -20,7 +20,7 @@ contracts, skills, templates          constraints, domain profiles
 
 ## Project context
 
-`.project/` provides replaceable, owned, freshness-aware facts. The version included here is an example for a broad enterprise squad and must not be treated as production truth.
+The active project snapshot provides replaceable, owned, freshness-aware facts. The `.project/` version distributed in this repository is a legacy example and must not be treated as production truth.
 
 ## Runtime boundary
 
@@ -28,7 +28,7 @@ The development tool supplies execution, context windows, native delegation, ter
 
 ## Durable demand artifacts
 
-For work performed in an adopted project, the Git-ignored local directory `deliveries/<demand-id>/` retains the demand, selected context, decisions, evidence references, gate outcomes, reviews, and summary. It is not promoted with squad releases. Permanent documentation is routed to the canonical documentation repository or the owner repository's `docs/` directory. Runtime-private state may remain ephemeral.
+For work performed in an active project, the private `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/` directory retains the demand, selected context, decisions, evidence references, gate outcomes, reviews, and summary. It is not promoted with squad releases or created in a product checkout. Permanent documentation is routed to the canonical documentation repository or the owner repository's `docs/` directory.
 
 Before implementation, the delivery also retains a change plan describing likely changed/affected pieces, repository-local instructions, branch model, target-project pipeline, verification and integration order. See the end-to-end Mermaid flow in [start.md](../start.md#fluxo-da-squad).
 
