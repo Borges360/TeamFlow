@@ -12,7 +12,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED = ["feature", "bugfix", "tests", "performance", "adr", "finops", "doc", "refactor"]
+EXPECTED = ["feature", "bugfix", "tests", "technical-discovery", "performance", "adr", "finops", "doc", "refactor"]
 REQUIRED_SECTIONS = [
     "Purpose", "When to use", "Do not use when", "Inputs and autonomous discovery",
     "Blocking questions", "Preconditions", "Operational steps", "Semantic decisions",
@@ -185,7 +185,12 @@ def validate(root: Path) -> list[str]:
         errors.append(f"public playbook catalog must be exactly {EXPECTED}, got {ids}")
     aliases: list[str] = []
     workflows = workflow_ids(root)
-    required_fields = {"id", "version", "aliases", "path", "workflow", "side_effect_class", "permissions"}
+    required_fields = {
+        "id", "name", "version", "optional_invocation", "aliases", "path",
+        "primary_workflow", "side_effect_class", "invocation_examples",
+        "always_required", "conditional_activation", "outputs", "stop_conditions",
+        "permissions",
+    }
     for entry in entries:
         if not isinstance(entry, dict):
             errors.append("registry entry must be an object")
@@ -200,8 +205,19 @@ def validate(root: Path) -> list[str]:
             errors.append(f"playbook {playbook_id} requires valid aliases")
             current_aliases = []
         aliases.extend(current_aliases)
-        if entry.get("workflow") not in workflows:
-            errors.append(f"playbook {playbook_id} references unknown workflow: {entry.get('workflow')}")
+        if entry.get("primary_workflow") not in workflows:
+            errors.append(f"playbook {playbook_id} references unknown workflow: {entry.get('primary_workflow')}")
+        if entry.get("optional_invocation") is not True:
+            errors.append(f"playbook {playbook_id} must be optional")
+        examples = entry.get("invocation_examples")
+        if not isinstance(examples, list) or not examples or not all(isinstance(example, str) and example.strip() for example in examples):
+            errors.append(f"playbook {playbook_id} requires invocation examples")
+        required = entry.get("always_required")
+        if not isinstance(required, dict) or set(required) != {"roles", "artifacts", "gates"}:
+            errors.append(f"playbook {playbook_id} has invalid always_required composition")
+        for field in ("conditional_activation", "outputs", "stop_conditions"):
+            if not isinstance(entry.get(field), list):
+                errors.append(f"playbook {playbook_id} field {field} must be a list")
         if entry.get("side_effect_class") not in {"read-only", "conditional-write", "repository-write"}:
             errors.append(f"playbook {playbook_id} has invalid side_effect_class")
         permissions = entry.get("permissions")
@@ -225,7 +241,7 @@ def validate(root: Path) -> list[str]:
             metadata = {}
         if metadata.get("schema_version") != registry.get("schema_version"):
             errors.append(f"playbook {playbook_id} front matter differs from registry field: schema_version")
-        for field in ("id", "version", "aliases", "workflow", "side_effect_class", "permissions"):
+        for field in required_fields:
             if metadata.get(field) != entry.get(field):
                 errors.append(f"playbook {playbook_id} front matter differs from registry field: {field}")
         for section in REQUIRED_SECTIONS:

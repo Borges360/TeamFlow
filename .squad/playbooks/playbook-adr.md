@@ -1,12 +1,12 @@
 ---
-{"schema_version":"1.0","id":"adr","version":"1.0","aliases":["decision"],"workflow":"architecture-review","side_effect_class":"repository-write","permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
+{"schema_version":"1.1","id":"adr","name":"ADR","version":"1.0","optional_invocation":true,"aliases":["decision"],"path":".squad/playbooks/playbook-adr.md","primary_workflow":"architecture-review","side_effect_class":"repository-write","invocation_examples":["Use o playbook adr para documentar a decisão."],"always_required":{"roles":[],"artifacts":[],"gates":[]},"conditional_activation":[],"outputs":[],"stop_conditions":[],"permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
 ---
 # Playbook: adr
 
 ## Purpose
 Record a consequential architectural decision and its evidence, alternatives and consequences.
 ## When to use
-Use `/adr <decision question>` for cross-system, costly-to-reverse, exception-setting, or ownership-significant choices.
+Use the `adr` playbook for cross-system, costly-to-reverse, exception-setting, or ownership-significant choices.
 ## Do not use when
 Do not create ceremony for trivial/local reversible choices or autoapprove organizational decisions.
 ## Inputs and autonomous discovery

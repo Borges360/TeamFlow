@@ -2,9 +2,9 @@
 
 ## Bootstrap
 
-1. Configure the tool to read root `AGENTS.md` as project instructions, or provide that file as the initial project context.
-2. Keep `.squad/` available as the reusable instruction library and `.project/` as project context.
-3. Let one native session/agent act as lead and maintain `deliveries/<demand-id>/`.
+1. Activate a project with `teamflow project activate <project-id>` and configure the tool from its generated `activation.json`.
+2. Read the cached immutable base identified there and the project's private effective context; do not require `.project/` in a product checkout.
+3. Let one native session/agent act as lead and maintain `deliveries/<demand-id>/` only beneath that private project root.
 
 ## Roles and delegation
 

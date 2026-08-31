@@ -11,6 +11,9 @@ Analyze the pieces a demand may change before solution design, delegation, or wr
 5. Record dependencies, integration/merge order, compatibility, rollout/rollback implications and write boundary.
 6. Link each proposed change to a requirement or risk. Do not add a piece merely because it exists in the stack.
 7. Reassess after reproduction, design or implementation reveals material scope.
+8. For every changed component/API, resolve catalogued journeys and evaluate API/contracts, frontend, mobile/webview, internal/external consumers, data/analytics, infrastructure, observability, tests and documentation. Mark every surface `changed`, `affected`, `observed`, `follow-up`, `not_applicable`, or `unknown`.
+
+When documentation presents mutually exclusive alternatives and the demand identifies neither an accepted option nor enough criteria to choose, ask which solution to implement or whether to begin technical discovery. Agent preference is not a decision criterion. Alternative records use stable IDs, proposal/discarded/selected/superseded status, evidence, constraints and human decision when available.
 
 Use `.squad/contracts/change-plan.md` and `.squad/templates/change-plan.md`. A read-only demand still produces a small plan that explicitly records zero intended writes.
 

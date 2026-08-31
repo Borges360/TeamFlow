@@ -11,7 +11,8 @@
     {"id":"PB-P07","playbook":"finops","objective":"supported cost baseline and safeguards","expected_valid":true},
     {"id":"PB-P08","playbook":"doc","objective":"canonical documentation repository","expected_valid":true},
     {"id":"PB-P09","playbook":"doc","objective":"fallback docs directory","expected_valid":true},
-    {"id":"PB-P10","playbook":"refactor","objective":"preserve invariants with regression","expected_valid":true}
+    {"id":"PB-P10","playbook":"refactor","objective":"preserve invariants with regression","expected_valid":true},
+    {"id":"PB-P11","playbook":"technical-discovery","objective":"compare material alternatives without implementation and preserve human decision authority","expected_valid":true}
   ],
   "adversarial_cases": [
     {"id":"PB-A01","control":"duplicate-alias","expected_valid":false},

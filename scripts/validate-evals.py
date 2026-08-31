@@ -81,8 +81,8 @@ def main() -> int:
     if len(positive) < 10 or len(adversarial) < 18:
         errors.append("playbook evals require at least 10 positive and 18 adversarial cases")
     covered = {case.get("playbook") for case in positive}
-    if covered != {"feature", "bugfix", "tests", "performance", "adr", "finops", "doc", "refactor"}:
-        errors.append("positive playbook evals must cover exactly the eight public playbooks")
+    if covered != {"feature", "bugfix", "tests", "technical-discovery", "performance", "adr", "finops", "doc", "refactor"}:
+        errors.append("positive playbook evals must cover exactly the nine public playbooks")
     playbook_case_ids = [case.get("id") for case in positive + adversarial]
     if any(not isinstance(case_id, str) or not case_id for case_id in playbook_case_ids) or len(playbook_case_ids) != len(set(playbook_case_ids)):
         errors.append("playbook eval case ids must be non-empty and unique")

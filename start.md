@@ -32,22 +32,23 @@ Catalogue metadados e referências; o agente descobre o código progressivamente
 python scripts/validate-template.py --mode active
 ```
 
-## Playbooks operacionais
+## Playbooks operacionais opcionais
 
-O catálogo público possui exatamente oito atalhos carregados sob demanda:
+O catálogo possui nove receitas opcionais carregadas sob demanda. Demandas em linguagem natural são roteadas diretamente ao workflow; nomes iniciados por `/` abaixo são apenas atalhos textuais de prompt, não comandos do shell/runtime.
 
 | Comando | Resultado principal |
 |---|---|
 | `/feature` | funcionalidade ou mudança funcional |
 | `/bugfix` | diagnóstico, causa sustentada, correção e regressão |
 | `/tests` | cobertura ligada a requisito/risco |
+| `technical-discovery` | comparação de alternativas sem implementar produto |
 | `/performance` | baseline, experimento comparável e verificação |
 | `/adr` | decisão `proposed`, alternativas e consequências |
 | `/finops` | baseline de custo, alternativas e proteção de SLA/qualidade |
 | `/doc` | documentação no repositório canônico ou fallback `docs/` |
 | `/refactor` | estrutura melhor preservando invariantes funcionais |
 
-Exemplo: `/bugfix corrigir timeout na consulta de contratos`. O agente resolve o playbook, descobre repositórios, prepara checkouts fora deste template, segue branches/pipelines locais e registra evidência. Repositórios de produto nunca são clonados dentro de `.squad/`.
+Exemplo: `Use o playbook bugfix para corrigir timeout na consulta de contratos`. Também é válido referenciar `.squad/playbooks/playbook-bugfix.md` ou descrever apenas o defeito. O agente resolve o workflow, descobre repositórios, segue branches/pipelines locais e registra evidência. Repositórios de produto nunca são clonados automaticamente nem colocados dentro de `.squad/`.
 
 ## 2. Descubra a stack e componha o time
 
@@ -87,7 +88,7 @@ git switch -c feature/<demand-id>-<descricao-curta>
 
 Essa é uma recomendação, não uma autorização para ignorar GitFlow, trunk-based development, release trains, hotfixes ou políticas protegidas do projeto. Registre qualquer desvio no change plan. Push, merge, deploy e release exigem suas próprias autorizações.
 
-Depois preserve a demanda, gere um demand ID, selecione o workflow e crie `deliveries/<demand-id>/`.
+Depois preserve a demanda, gere um demand ID, selecione o workflow e use o diretório privado do projeto em `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/`.
 
 ## 4. Analise o que precisará mudar antes de implementar
 
@@ -126,7 +127,7 @@ Escolha um piloto pequeno, reversível, de um único repositório e com critéri
 4. Revise requisitos, contexto e change impact antes de autorizar implementação.
 5. Deixe o agente implementar somente as peças aprovadas.
 6. Execute testes e os estágios aplicáveis da pipeline.
-7. Confira evidências, gates, revisão principal e resumo em `deliveries/<demand-id>/`.
+7. Confira evidências, gates, revisão principal e resumo no diretório privado `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/`.
 8. Registre tokens, custo e latência somente se o runtime fornecer esses valores; compare qualidade antes de concluir que houve melhoria.
 
 ## Prompt de exemplo
@@ -147,7 +148,7 @@ Antes de implementar:
 6. se as regras locais permitirem, use uma branch
    feature/<demand-id>-<descricao-curta> criada a partir de develop.
 
-Registre artefatos e evidências em deliveries/<demand-id>/. Pare com
+Registre artefatos e evidências somente em TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/. Pare com
 NEEDS_USER_INPUT ou BLOCKED se faltar regra de negócio, acesso, autorização,
 evidência obrigatória ou se uma decisão material não puder ser descoberta.
 Não faça push, merge, deploy, release ou ação destrutiva sem autorização explícita.
@@ -158,20 +159,23 @@ Não faça push, merge, deploy, release ou ação destrutiva sem autorização e
 ```mermaid
 flowchart TD
   A[Demanda do usuário] --> B[Preservar texto e gerar demand ID]
-  B --> B1[Resolver playbook no registry]
-  B1 --> C[Ler contexto e somente o playbook selecionado]
-  C --> D[Selecionar workflow primário]
-  D --> E{Regras locais permitem feature a partir de develop?}
-  E -- Sim --> F[Criar feature/demand-id-descricao]
-  E -- Não --> G[Seguir branch model do repositório]
-  F --> H[Definir requisitos e contexto mínimo]
-  G --> H
-  H --> H1[Descobrir e classificar repositórios]
+  B --> B1[Selecionar workflow por demanda]
+  B1 --> C{Playbook opcional explícito ou útil?}
+  C -- Sim --> D[Carregar somente o playbook selecionado]
+  C -- Não --> E[Ler contexto mínimo]
+  D --> E
+  E --> F[Selecionar workflow primário]
+  F --> G{Regras locais permitem feature a partir de develop?}
+  G -- Sim --> H[Criar feature/demand-id-descricao]
+  G -- Não --> I[Seguir branch model do repositório]
+  H --> J[Definir requisitos e contexto mínimo]
+  I --> J
+  J --> H1[Descobrir e classificar repositórios]
   H1 --> H2[Verificar acesso, owners e autorização]
   H2 --> H3[Preparar checkouts seguros fora da squad]
-  H3 --> I[Criar repository plans e analisar peças]
-  I --> J[Descobrir pipeline CI/CD existente]
-  J --> K[Planejar design, riscos, integração e rollback]
+  H3 --> I1[Criar repository plans e analisar peças]
+  I1 --> J1[Descobrir pipeline CI/CD existente]
+  J1 --> K[Planejar design, riscos, integração e rollback]
   K --> L[Ativar somente responsabilidades necessárias]
   L --> M[Implementar no escopo aprovado]
   M --> M1{Documento permanente necessário?}
@@ -183,7 +187,7 @@ flowchart TD
   N --> O[Registrar evidências e avaliar gates]
   O --> P{Gate falhou ou falta contexto?}
   P -- Sim --> Q[Corrigir ou retornar BLOCKED / NEEDS_USER_INPUT]
-  Q --> I
+  Q --> I1
   P -- Não --> R[Principal Review independente]
   R --> R1{Principal Review passou?}
   R1 -- Não, corrigível --> Q
@@ -198,13 +202,13 @@ flowchart TD
 
 Uma feature que adiciona uma fila pode envolver `customer-api` (contrato e produtor), `customer-infra` (fila e permissões) e `customer-tests` (contrato e jornada). O agente cria um `repository-plan` por repositório, cada um com remote verificado, owner, base/revisão, branch, limites de escrita e pipeline. Uma ordem possível é infraestrutura compatível primeiro, aplicação depois e testes por último; ela só é adotada após verificar contratos, rollback e regras locais. Sucesso em dois repositórios não oculta falha no terceiro, e nenhuma branch é publicada automaticamente.
 
-Documentação transversal vai ao repositório com `documentation_role: canonical-shared`. Sem esse repositório, vai a `docs/` do repositório proprietário. `deliveries/` guarda somente registros locais de execução e é ignorado pelo Git deste template.
+Documentação transversal vai ao repositório com `documentation_role: canonical-shared`. Sem esse repositório, vai a `docs/` do repositório proprietário. `deliveries/` guarda somente registros locais privados em `TEAMFLOW_HOME`, nunca no checkout deste template ou do produto.
 
 ## Quando criar uma release
 
 Crie uma release versionada deste template somente quando a entrega alterar sua estrutura reutilizável, comportamento normativo ou contratos — por exemplo `AGENTS.md`, `.squad/`, `squad.yaml` ou validators que definem conformidade.
 
-Uma tarefa comum de produto, uma alteração de contexto local em `.project/` ou artefatos em `deliveries/` não cria uma release da squad. Release ou deploy da aplicação é outro processo e segue exclusivamente a pipeline, regras locais e autoridades do projeto. Preparar versão não autoriza publicar tag ou release.
+Uma tarefa comum de produto, uma alteração de contexto local em `.project/` ou artefatos em `deliveries/` não cria uma release da squad. Release ou deploy da aplicação é outro processo e segue exclusivamente a pipeline, regras locais e autoridades do projeto. A preparação usa `release/<version>` e a publicação usa uma tag anotada `v<version>`; preparar a versão não autoriza publicar tag ou release.
 
 ## Checklist da primeira execução
 

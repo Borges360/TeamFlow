@@ -4,17 +4,17 @@ This repository is a documentation-first operating model for engineering agents.
 
 ## Source of truth
 
-The reusable base lives in `.squad/`. Project-specific context lives in `.project/` and may override local choices, but it may not silently weaken mandatory policies from `.squad/policies/`.
+The immutable reusable base lives under `TEAMFLOW_HOME/metadata/bases/<package-version>/` after `teamflow setup`. Project-specific effective context lives under `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/effective-context/`; repository-local instructions are the final, more restrictive layer. The distributed `.project/` directory is a legacy example only and may not silently weaken mandatory policies.
 
 Read in this order, progressively:
 
-1. this `AGENTS.md`;
-2. `.project/context.md`, `.project/squad.md`, and `.project/constraints.md`;
-3. `.squad/policies/workflow-routing.md` and the selected workflow;
-4. only the agent-role, skill, policy, contract, and project files required by the task;
-5. repository catalog entries for seed repositories, then their dependencies as needed.
+1. the active project's `generated-runtime-files/activation.json`, which identifies team, project, base and effective-context paths;
+2. this `AGENTS.md` from the cached immutable base;
+3. the active project's `effective-context/team-snapshot.json` and `effective-context/team-files/`;
+4. the cached base `.squad/policies/workflow-routing.md` and selected workflow;
+5. only required role, skill, policy, contract and repository-local files; then catalog seeds and dependencies progressively.
 
-Do not preload every file or repository. For large estates, follow `.squad/policies/context.md` and `.squad/policies/multi-repository.md`.
+When no active project exists, run `teamflow setup`, `teamflow team use <team-id>` and `teamflow project activate <project-id>`; do not fall back to a global project. Do not preload every file or repository. For large estates, follow `.squad/policies/context.md` and `.squad/policies/multi-repository.md`.
 
 ## Mandatory operating sequence
 
@@ -22,12 +22,12 @@ For every demand:
 
 1. Preserve the user's original demand verbatim in the demand artifact.
 2. Assign or derive a stable demand ID.
-3. Resolve an explicit or clearly matching operational playbook through `.squad/registries/playbooks.yaml`, then select its primary workflow using `.squad/policies/workflow-routing.md`. Load only the selected playbook. If selection materially remains ambiguous, ask one blocking question or perform a short requirement-analysis pass; do not guess.
+3. Select the primary workflow using `.squad/policies/workflow-routing.md`. When the user explicitly names a playbook or a clearly matching optional recipe materially helps, resolve it through `.squad/registries/playbooks.yaml` and load only that playbook. A playbook is never required for semantic routing or workflow execution. If workflow/recipe selection materially remains ambiguous, ask one blocking question or perform a short requirement-analysis pass; do not guess.
 4. Create a minimal context bundle using `.squad/contracts/context-bundle.md`.
 5. Before design or writes, inspect the target repository instructions and pipeline, then produce a change plan using `.squad/policies/change-impact.md` and `.squad/contracts/change-plan.md`. Identify the pieces likely to change, their owners, dependencies, tests, documentation, pipeline stages, integration order, and write boundary. For read-only work, record that no implementation pieces will change.
 6. Run the workflow phases in order and follow the target project's existing build/test/review/deployment pipeline when one exists. Parallelize only phases explicitly marked as parallel-safe.
 7. Activate conditional reviewers using `.squad/policies/risk-routing.md`, the blast radius, data classification, and project constraints.
-8. Persist decisions, open questions, outputs, and evidence locally under `deliveries/<demand-id>/` using `.squad/templates/delivery-index.md`. This directory is Git-ignored and must not be promoted to `release` or `main`; permanent project documentation belongs in its canonical repository or the owner repository's `docs/` fallback.
+8. Persist decisions, open questions, outputs, and evidence under the active project's private `teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/` root in `TEAMFLOW_HOME`, using `.squad/templates/delivery-index.md`. Never create these records in the product or template checkout. They must not be promoted to `release/<version>` or `main`; permanent project documentation belongs in its canonical repository or the owner repository's `docs/` fallback.
 9. Evaluate every required gate using `.squad/policies/quality-gates.md`. A role may recommend; the documented gate criteria decide progression.
 10. Perform principal review with the greatest independence the runtime supports.
 11. Deliver only when the definition of done and evidence contract are satisfied.
@@ -47,7 +47,7 @@ Follow the runtime-specific mapping in `.squad/runtimes/`; these mappings adapt 
 
 ## Branch and project-pipeline alignment
 
-- For ordinary task implementation, prefer a dedicated `feature/<demand-id>-<short-name>` branch created from `develop` when that model exists in the target repository.
+- For ordinary task implementation, prefer a dedicated `feature/<demand-id>-<short-name>` branch created from `develop` when that model exists in the target repository. Never use an isolated `feature`, `release`, or `codex/<name>` branch; use `release/<version>` for release preparation and `feature/codex-<name>` for Codex-originated work.
 - Repository-local branching rules, protected-branch policy, release trains, hotfix/incident procedures, and explicit user instructions take precedence. Record any deviation in the change plan.
 - Discover CI/CD definitions and required checks before implementation. Reproduce applicable stages locally where safe; do not bypass or replace the project's pipeline with squad-specific assumptions.
 
