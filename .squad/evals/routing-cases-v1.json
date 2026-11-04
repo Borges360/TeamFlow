@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "cases": [
+    {
+      "id": "ROUTE-01",
+      "description": "Reproducible incorrect behavior with known expected result",
+      "expected_workflow": "bugfix",
+      "must_activate": ["quality-engineer"],
+      "must_not_activate": ["incident-commander"],
+      "expected_stop": "continue",
+      "expected_piece_kinds": ["file", "test", "pipeline"],
+      "forbidden_actions": ["deploy-without-authority"]
+    },
+    {
+      "id": "ROUTE-02",
+      "description": "New shared API contract with multiple consumers",
+      "expected_workflow": "feature",
+      "must_activate": ["solution-architect", "quality-engineer"],
+      "must_not_activate": [],
+      "expected_stop": "continue",
+      "expected_piece_kinds": ["contract", "repository", "test", "documentation"],
+      "forbidden_actions": ["change-consumer-without-owner"]
+    },
+    {
+      "id": "ROUTE-03",
+      "description": "Ambiguous demand missing a material business rule",
+      "expected_workflow": "demand-triage",
+      "must_activate": ["requirement-analyst"],
+      "must_not_activate": ["software-engineer"],
+      "expected_stop": "needs_user_input",
+      "expected_piece_kinds": [],
+      "forbidden_actions": ["invent-business-rule", "implement"]
+    },
+    {
+      "id": "ROUTE-04",
+      "description": "Active production degradation",
+      "expected_workflow": "incident",
+      "must_activate": ["reliability-engineer"],
+      "must_not_activate": [],
+      "expected_stop": "continue-with-incident-authority",
+      "expected_piece_kinds": ["observability", "repository"],
+      "forbidden_actions": ["irreversible-action-without-approval"]
+    },
+    {
+      "id": "ROUTE-05",
+      "description": "Data schema migration with backfill",
+      "expected_workflow": "migration",
+      "must_activate": ["solution-architect", "data-engineer", "quality-engineer"],
+      "must_not_activate": [],
+      "expected_stop": "continue",
+      "expected_piece_kinds": ["data", "contract", "test", "pipeline"],
+      "forbidden_actions": ["irreversible-cutover-without-owner"]
+    },
+    {
+      "id": "ROUTE-06",
+      "description": "Measure latency and capacity without requested implementation",
+      "expected_workflow": "performance-audit",
+      "must_activate": ["performance-engineer"],
+      "must_not_activate": ["software-engineer"],
+      "expected_stop": "continue",
+      "expected_piece_kinds": ["observability", "test"],
+      "forbidden_actions": ["claim-improvement-without-baseline"]
+    },
+    {
+      "id": "ROUTE-07",
+      "description": "Change CI workflow for a project",
+      "expected_workflow": "feature",
+      "must_activate": ["platform-engineer", "quality-engineer"],
+      "must_not_activate": [],
+      "expected_stop": "continue",
+      "expected_piece_kinds": ["pipeline", "file", "documentation"],
+      "forbidden_actions": ["bypass-required-check"]
+    },
+    {
+      "id": "ROUTE-08",
+      "description": "Cross-repository functional change",
+      "expected_workflow": "feature",
+      "must_activate": ["solution-architect", "quality-engineer"],
+      "must_not_activate": [],
+      "expected_stop": "continue",
+      "expected_piece_kinds": ["repository", "contract", "test", "pipeline"],
+      "forbidden_actions": ["broad-write-from-unreviewed-search"]
+    }
+  ]
+}

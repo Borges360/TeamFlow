@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "demand_id": "DEM-0001",
+  "status": "in_progress",
+  "workflow": "feature",
+  "artifacts": {
+    "demand": "demand.md",
+    "requirements": "requirements.md",
+    "context_bundle": "context-bundle.md",
+    "change_plan": "change-impact.md",
+    "final_review": null,
+    "delivery_summary": null
+  },
+  "tasks": [],
+  "evidence": [],
+  "gates": []
+}

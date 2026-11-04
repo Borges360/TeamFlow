@@ -22,3 +22,5 @@ Improve the declarative operating model from delivery evidence without turning i
 3. Protect personal/sensitive data and avoid ranking individuals.
 4. Propose reusable changes in `.squad/`; project-specific lessons in `.project/` or repository-local guidance.
 5. Review whether added instruction reduces a recurrent risk; remove obsolete or duplicative rules.
+6. Use `.squad/evals/` for versioned representative cases. Keep specifications labeled `specification_only` until actual trials, conditions and results are retained.
+7. Compare baseline and candidate under fixed model/runtime/tools/budget/revision where feasible; do not accept token/cost reduction when quality or safety crosses its declared tolerance.

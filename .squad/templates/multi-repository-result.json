@@ -1,0 +1,10 @@
+{
+  "demand_id": "DEM-123",
+  "status": "completed",
+  "repositories": [
+    {"id":"customer-api","branch":"feature/DEM-123-change","revision":"abc123","result":"verified","evidence":["EV-API"]},
+    {"id":"integration-tests","branch":"feature/DEM-123-change","revision":"def456","result":"verified","evidence":["EV-E2E"]}
+  ],
+  "integration": {"strategy":"contract-first","order":["customer-api","integration-tests"],"cross_repository_checks":["contract-suite"],"unresolved":[]},
+  "evidence": ["EV-API", "EV-E2E"]
+}

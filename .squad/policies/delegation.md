@@ -18,7 +18,7 @@ Delegation uses the active tool's native agent/task capabilities. This template 
 
 ## Mandatory handoff
 
-Every delegated unit must include a task contract: objective, assigned responsibility, inputs, context bundle, allowed actions/tools, expected outputs, completion criteria, risks, and where to return artifacts.
+Every delegated unit must include a task contract: objective, assigned responsibility, inputs, context bundle, allowed actions/tools, operation class/side effects/retry boundary, expected outputs, completion criteria, risks, and where to return artifacts.
 
 The delegate returns a result contract. It may request more work or context but may not silently expand its scope.
 
@@ -30,5 +30,7 @@ The delegate returns a result contract. It may request more work or context but 
 4. A reviewer must receive the claim, artifacts, and evidence—not the author's confidence statement alone.
 5. If native delegation is unavailable, execute roles sequentially and label the responsibility performed.
 6. Delegation never transfers user authority for destructive, external, regulatory, or scope-expanding actions.
+7. Only tools named by the task are authorized. A runtime may expose a larger catalog, but the delegate does not select tools outside its task without returning for scope/authority revision.
+8. Failure, interruption and partial effects follow `.squad/policies/failure-handling.md`; retries are never inferred from delegation alone.
 
 Runtime concurrency is a capacity ceiling, not a reason to create work. When fan-out cannot be safely bounded, execute sequentially.

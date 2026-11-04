@@ -23,7 +23,7 @@ Protect people, data, security, and service continuity before completeness. Time
 
 ## Gates
 
-During active mitigation, the Incident Commander or authorized owner makes documented risk decisions. Before closure, complete Recovery Validation, Security (if implicated), Evidence, and Principal/incident review. Emergency exceptions follow the exception policy and expire.
+During active mitigation, the Incident Commander or authorized owner makes documented risk decisions. After stabilization and before durable changes, record affected pieces and applicable project-pipeline stages. Before closure, complete recovery criteria under `production-readiness`, `security` if implicated, retained evidence, and `principal-review`. Emergency exceptions follow the exception policy and expire.
 
 ## Exit criteria
 

@@ -1,6 +1,6 @@
 # Delivery Index — [DEMAND-ID]
 
-- Status: [triage/in-progress/blocked/needs-user-input/complete]
+- Status: [triage/in_progress/blocked/needs_user_input/complete]
 - Workflow: [workflow]
 - Lead: [role/person/agent]
 - Started: [timestamp]
@@ -16,6 +16,9 @@
 | Demand | accepted | Lead | — | `demand.md` |
 | Requirements | [status] | Requirement Analyst | [reviewer] | `requirements.md` |
 | Context bundle | [status] | Lead | [reviewer] | `context-bundle.md` |
+| Change plan | [status] | Lead | [reviewer] | `change-impact.md` |
+
+- Machine-readable state: `delivery-state.json` (objective references/status only; narrative remains in Markdown).
 
 ## Tasks and delegations
 

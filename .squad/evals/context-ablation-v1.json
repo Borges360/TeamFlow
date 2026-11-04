@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "context-ablation-v1",
+  "status": "specification_only",
+  "fixed_conditions": [
+    "task",
+    "repository_revision",
+    "runtime",
+    "model_or_agent_version",
+    "tools_and_permissions",
+    "budget"
+  ],
+  "variants": [
+    {
+      "id": "core-only",
+      "context": ["user-demand", "AGENTS.md", "selected-workflow", "repository-instructions"]
+    },
+    {
+      "id": "progressive",
+      "context": ["core-only", "context-bundle", "change-plan", "sources-loaded-on-demand"]
+    },
+    {
+      "id": "broad-preload-control",
+      "context": ["core-only", "all-project-docs", "all-role-files", "all-workflows"]
+    }
+  ],
+  "measure": [
+    "task_success",
+    "requirements_completeness",
+    "supported_claim_rate",
+    "unsafe_action_rate",
+    "human_intervention",
+    "runtime_reported_input_tokens",
+    "runtime_reported_output_tokens",
+    "latency_seconds",
+    "runtime_reported_cost"
+  ],
+  "acceptance_rule": "A smaller context is accepted only when quality and safety stay within human-approved tolerances for the representative task set.",
+  "limitations": [
+    "No variant has been executed.",
+    "File size or bytes are not token measurements.",
+    "Results do not transfer across model/runtime versions without revalidation."
+  ]
+}

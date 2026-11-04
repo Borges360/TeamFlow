@@ -11,6 +11,7 @@ Governance makes ownership, decisions, controls, and exceptions inspectable with
 5. Guardrails are explicit and versioned; agents do not invent or bypass them.
 6. Changes to universal contracts or mandatory policies require principal review and a changelog entry.
 7. Delivery artifacts are auditable but must respect data minimization and retention constraints.
+8. Squad-template releases follow `.squad/policies/release-management.md`; ordinary project demands and local context changes do not create a squad release.
 
 ## Precedence
 

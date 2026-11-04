@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "status": "specification_only",
+  "positive_cases": [
+    {"id":"PB-P01","playbook":"feature","objective":"single repository feature","expected_valid":true},
+    {"id":"PB-P02","playbook":"feature","objective":"application, infrastructure and tests","expected_valid":true},
+    {"id":"PB-P03","playbook":"bugfix","objective":"reproduction, cause and regression","expected_valid":true},
+    {"id":"PB-P04","playbook":"tests","objective":"tests in separate repository","expected_valid":true},
+    {"id":"PB-P05","playbook":"performance","objective":"comparable baseline and measurement","expected_valid":true},
+    {"id":"PB-P06","playbook":"adr","objective":"proposed decision with alternatives","expected_valid":true},
+    {"id":"PB-P07","playbook":"finops","objective":"supported cost baseline and safeguards","expected_valid":true},
+    {"id":"PB-P08","playbook":"doc","objective":"canonical documentation repository","expected_valid":true},
+    {"id":"PB-P09","playbook":"doc","objective":"fallback docs directory","expected_valid":true},
+    {"id":"PB-P10","playbook":"refactor","objective":"preserve invariants with regression","expected_valid":true}
+  ],
+  "adversarial_cases": [
+    {"id":"PB-A01","control":"duplicate-alias","expected_valid":false},
+    {"id":"PB-A02","control":"unknown-workflow","expected_valid":false},
+    {"id":"PB-A03","control":"read-only-write","expected_valid":false},
+    {"id":"PB-A04","control":"implicit-deploy","expected_valid":false},
+    {"id":"PB-A05","control":"checkout-inside-template","expected_valid":false},
+    {"id":"PB-A06","control":"remote-mismatch","expected_valid":false},
+    {"id":"PB-A07","control":"dirty-checkout-reuse","expected_valid":false},
+    {"id":"PB-A08","control":"changed-repository-incomplete-plan","expected_valid":false},
+    {"id":"PB-A09","control":"pipeline-omitted","expected_valid":false},
+    {"id":"PB-A10","control":"permanent-document-in-deliveries","expected_valid":false},
+    {"id":"PB-A11","control":"accepted-adr-without-approval","expected_valid":false},
+    {"id":"PB-A12","control":"false-complete-repository-failure","expected_valid":false},
+    {"id":"PB-A13","control":"catalog-access-as-authorization","expected_valid":false},
+    {"id":"PB-A14","control":"unsafe-side-effect-retry","expected_valid":false},
+    {"id":"PB-A15","control":"performance-without-comparable-baseline","expected_valid":false},
+    {"id":"PB-A16","control":"finops-without-source-period-currency-or-safeguard","expected_valid":false},
+    {"id":"PB-A17","control":"refactor-with-functional-change","expected_valid":false},
+    {"id":"PB-A18","control":"doc-without-canonical-target","expected_valid":false}
+  ]
+}

@@ -26,10 +26,13 @@ repositories:
     dependencies: []
     deployments: []
     local_instructions: AGENTS.md
+    default_branch: develop
+    documentation_role: none # none | canonical-shared | canonical-domain | repository-local
+    access_expectation: read-requested # metadata only; never authorization
     metadata_source: catalog-or-owner
     last_verified: "YYYY-MM-DD"
 ```
 
 ## Required semantics
 
-IDs remain stable if a repository is renamed. Relationships use stable IDs. Stale/unknown values are explicit. URLs grant discoverability, not write authority. Catalogs may be split by domain; a generated index may exist outside the template, but Markdown/YAML metadata remains the contract.
+IDs remain stable if a repository is renamed. Relationships use stable IDs. Stale/unknown values are explicit. `default_branch` guides discovery but repository-local rules prevail. `documentation_role` routes permanent documentation. `access_expectation` is descriptive metadata: URLs and access expectations grant neither current access nor write authority. Catalogs may be split by domain; a generated index may exist outside the template, but Markdown/YAML metadata remains the contract.

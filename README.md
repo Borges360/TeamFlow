@@ -27,10 +27,12 @@ Everything in `.squad/` is designed to work for any engineering squad. Everythin
 ├── .squad/
 │   ├── agents/                       responsibility definitions
 │   ├── workflows/                    feature, bugfix, incident, architecture, migration, performance
+│   ├── playbooks/                    eight load-on-demand developer recipes
 │   ├── policies/                     routing, context, delegation, gates, evidence, governance
 │   ├── contracts/                    portable task/result/artifact/user-input contracts
 │   ├── skills/                       load-on-demand engineering procedures
 │   ├── templates/                    reusable delivery artifacts
+│   ├── evals/                        specification-only routing, failure and context cases
 │   ├── runtimes/                     native-runtime mappings, not adapters
 │   └── registries/                   capability and workflow indexes
 ├── .project/                          contextual EXAMPLE for the initial squad
@@ -38,12 +40,14 @@ Everything in `.squad/` is designed to work for any engineering squad. Everythin
 │   ├── agent-profiles/               example specializations of universal roles
 │   └── skills/                       example technology/domain procedures
 ├── docs/                              adoption and architecture guidance
-└── scripts/validate-template.py       optional structural validator only
+└── scripts/                           optional deterministic maintenance checks only
 ```
 
 ## Como utilizar
 
 O template é usado pelo agente de desenvolvimento que você já utiliza. Não há serviço para iniciar, banco para configurar ou CLI obrigatória.
+
+Para o caminho completo — preparar um projeto existente, compor responsabilidades pela stack real, criar a primeira branch, mapear peças afetadas, seguir a pipeline e executar o piloto — consulte [start.md](start.md).
 
 ### 1. Preparar o contexto do projeto
 
@@ -90,12 +94,15 @@ Demanda: corrija a consulta de contratos que retorna dados desatualizados.
 
 O segundo formato é opcional: um runtime corretamente configurado já lê `AGENTS.md`.
 
+Use atalhos operacionais quando preferir: `/feature`, `/bugfix`, `/tests`, `/performance`, `/adr`, `/finops`, `/doc` ou `/refactor`. O texto completo de somente um playbook é carregado sob demanda; workspace, branch, pipeline e documentação seguem as políticas comuns.
+
 ### 4. O que o agente fará
 
 ```text
 Demanda
   → triagem e workflow adequado
-  → requisitos e contexto mínimo
+  → requisitos, contexto mínimo e change plan
+  → descoberta da branch/pipeline do projeto
   → descoberta progressiva de sistemas e repositórios
   → arquitetura e revisões especializadas quando houver risco
   → implementação e testes com evidência
@@ -107,7 +114,7 @@ Por exemplo, uma mudança apenas de interface pode ativar Software, Quality e Ac
 
 ### 5. Onde acompanhar o trabalho
 
-Para cada demanda, o agente cria `deliveries/<demand-id>/` no projeto adotante. O arquivo inicial é `delivery-index.md`, que aponta para os requisitos, contexto, tarefas, decisões, evidências, gates, revisão e resumo final.
+Para cada demanda, o agente cria localmente `deliveries/<demand-id>/` no projeto adotante. O diretório é ignorado pelo Git e não segue para branches de release; `delivery-index.md` aponta para requisitos, contexto, tarefas, decisões, evidências, gates, revisão e resumo. Documentação permanente é gravada no repositório canônico ou em `docs/` do repositório proprietário.
 
 O trabalho só deve ser apresentado como concluído quando os gates aplicáveis estiverem resolvidos e as evidências estiverem vinculadas. Se faltarem regra de negócio, autoridade, acesso ou contexto, o agente deve retornar `NEEDS_USER_INPUT` ou `BLOCKED` com a pergunta e o impacto.
 
@@ -121,7 +128,7 @@ Não há pacote Python, serviço, scheduler, banco de dados, máquina de estados
 4. Keep the universal `.squad/` base stable and evolve it through reviewed changes.
 5. Add project skills only for procedures that truly differ from the base.
 6. Configure the active runtime to honor `AGENTS.md` or reference it in its native instructions.
-7. Pilot one controlled demand and review the generated delivery bundle.
+7. Pilot one controlled demand and review the generated local delivery bundle; do not commit it to release branches.
 
 See [adoption guide](docs/adoption.md), [architecture](docs/architecture.md), and [runtime usage](docs/using-with-runtimes.md).
 
@@ -132,7 +139,15 @@ The replacement of the discarded Python platform is documented in the [implement
 The small validator checks required files, manifest paths, local Markdown links, and accidental reintroduction of platform code:
 
 ```text
-python scripts/validate-template.py
+python scripts/validate-template.py --mode template
 ```
 
-It is a convenience for maintainers, not the squad runtime.
+Additional deterministic checks:
+
+```text
+python scripts/validate-evals.py
+python scripts/validate-delivery.py deliveries/<demand-id>
+python -m unittest discover -s scripts/tests -v
+```
+
+They are maintainers' checks, not the squad runtime, and do not prove semantic correctness or operational effectiveness.

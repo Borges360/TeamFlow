@@ -2,8 +2,16 @@ schema_version: "1.0"
 artifact_types:
   demand-intake: .squad/templates/demand-intake.md
   delivery-index: .squad/templates/delivery-index.md
+  open-questions: .squad/templates/open-questions.md
   requirements: .squad/templates/requirements.md
   context-bundle: .squad/templates/context-bundle.md
+  change-plan: .squad/templates/change-plan.md
+  delivery-state: .squad/templates/delivery-state.json
+  playbook-result: .squad/templates/playbook-result.json
+  repository-workspace: .squad/templates/repository-workspace.json
+  repository-plan: .squad/templates/repository-plan.json
+  documentation-target: .squad/templates/documentation-target.json
+  multi-repository-result: .squad/templates/multi-repository-result.json
   architecture: .squad/templates/architecture.md
   adr: .squad/templates/adr.md
   test-plan: .squad/templates/test-plan.md

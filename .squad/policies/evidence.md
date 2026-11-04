@@ -1,10 +1,12 @@
 # Policy: Evidence
 
-Evidence makes a claim independently inspectable. Store it under `deliveries/<demand-id>/evidence/` or link to an approved immutable system when sensitive or too large.
+Evidence makes a claim independently inspectable. Store it locally under the Git-ignored `deliveries/<demand-id>/evidence/` or link to an approved immutable system when sensitive, shared, or too large. Never commit the local delivery bundle to a squad release branch.
 
 ## Required metadata
 
 Every evidence item records: evidence ID, demand ID, claim/criterion, producer role, timestamp and timezone, source/repository, revision when relevant, environment, command or procedure, inputs/test data classification, result, retained artifact location, and limitations.
+
+For material agent/tool execution, also record when available: run/task ID, runtime, model or agent version, context-bundle reference, repository revisions, tools/versions, attempt number, termination and observed side effects. Unknown values remain explicit; full conversations and private reasoning are not required.
 
 ## Test evidence
 
