@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 - 2026-11-04
+
+- Added operational playbooks and multi-repository controls for coordinated project work.
+- Added the proactive handoff suggestions rule, grounded in current signals and the active task.
+
 ## 1.2.0 - 2026-08-30
 
 - Added the reusable `/feature`, `/bugfix`, `/tests`, `/performance`, `/adr`, `/finops`, `/doc`, and `/refactor` playbooks.
