@@ -1,12 +1,12 @@
 ---
-{"schema_version":"1.0","id":"bugfix","version":"1.0","aliases":["fix"],"workflow":"bugfix","side_effect_class":"repository-write","permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
+{"schema_version":"1.1","id":"bugfix","name":"Bugfix","version":"1.0","optional_invocation":true,"aliases":["fix"],"path":".squad/playbooks/playbook-bugfix.md","primary_workflow":"bugfix","side_effect_class":"repository-write","invocation_examples":["Use o playbook bugfix para corrigir o defeito.","Use .squad/playbooks/playbook-bugfix.md.","Corrija o comportamento incorreto."],"always_required":{"roles":[],"artifacts":[],"gates":[]},"conditional_activation":[],"outputs":[],"stop_conditions":[],"permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
 ---
 # Playbook: bugfix
 
 ## Purpose
 Diagnose and correct incorrect existing behavior with regression evidence.
 ## When to use
-Use `/bugfix <symptom>` for reproducible or observable defects.
+Use the `bugfix` playbook for reproducible or observable defects.
 ## Do not use when
 Use feature for new behavior; use investigate-only workflow when implementation is not authorized.
 ## Inputs and autonomous discovery

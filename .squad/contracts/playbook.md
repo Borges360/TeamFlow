@@ -4,7 +4,7 @@ A playbook is a developer-facing, load-on-demand operational recipe. It selects 
 
 ## Registry and front matter
 
-Every entry declares unique `id`, `version`, unique aliases, existing `path`, existing `workflow`, `side_effect_class` (`read-only`, `conditional-write`, or `repository-write`), and explicit permission flags. The Markdown file repeats these values in JSON-compatible YAML front matter; the validator rejects divergence. Distributed playbooks set `may_push`, `may_merge`, `may_deploy`, `may_release`, and `may_delete` to `false`. Prose cannot grant a permission denied by this structured contract.
+Every entry declares unique `id`, `name`, `version`, `optional_invocation: true`, unique aliases, existing `path`, existing `primary_workflow`, invocation examples, explicit `always_required`/`conditional_activation` composition, outputs, stop conditions, `side_effect_class` (`read-only`, `conditional-write`, or `repository-write`), and permission flags. The Markdown file repeats these values in JSON-compatible YAML front matter; the validator rejects divergence. Distributed playbooks set `may_push`, `may_merge`, `may_deploy`, `may_release`, and `may_delete` to `false`. Prose cannot grant a permission denied by this structured contract.
 
 ## Required sections
 
@@ -12,7 +12,7 @@ Every entry declares unique `id`, `version`, unique aliases, existing `path`, ex
 
 ## Common invariants
 
-- Resolve explicit `/id` or alias first; otherwise use objective routing and ask only when ambiguity materially changes risk/result.
+- Resolve an explicit playbook name/path or alias first; otherwise use objective semantic routing and ask only when ambiguity materially changes risk/result. A slash-prefixed form is only text in a prompt, never a native shell/runtime command unless a runtime implements it.
 - Load only the selected playbook plus referenced context.
 - Before writes, produce change impact and repository plans.
 - Follow `.squad/policies/repository-workspace.md`, `documentation-routing.md`, `pipeline-alignment.md`, and repository-local rules.

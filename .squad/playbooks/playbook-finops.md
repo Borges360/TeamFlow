@@ -1,12 +1,12 @@
 ---
-{"schema_version":"1.0","id":"finops","version":"1.0","aliases":["cost"],"workflow":"performance-audit","side_effect_class":"conditional-write","permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
+{"schema_version":"1.1","id":"finops","name":"FinOps","version":"1.0","optional_invocation":true,"aliases":["cost"],"path":".squad/playbooks/playbook-finops.md","primary_workflow":"performance-audit","side_effect_class":"conditional-write","invocation_examples":["Use o playbook finops para avaliar custos."],"always_required":{"roles":[],"artifacts":[],"gates":[]},"conditional_activation":[],"outputs":[],"stop_conditions":[],"permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
 ---
 # Playbook: finops
 
 ## Purpose
 Analyze or improve operational cost while protecting required quality, reliability, security and performance.
 ## When to use
-Use `/finops <cost question>` for cloud, infrastructure, data, licensing or runtime-cost decisions.
+Use the `finops` playbook for cloud, infrastructure, data, licensing or runtime-cost decisions.
 ## Do not use when
 Do not report estimates as realized savings or change financial commitments/production without authority.
 ## Inputs and autonomous discovery

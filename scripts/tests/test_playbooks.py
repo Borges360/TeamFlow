@@ -128,12 +128,12 @@ class PlaybookValidatorTests(unittest.TestCase):
     def test_missing_section_and_front_matter_divergence_are_rejected(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.fixture(temporary)
-            path = root / ".squad/playbooks/feature.md"
+            path = root / ".squad/playbooks/playbook-feature.md"
             path.write_text(path.read_text(encoding="utf-8").replace("## Completion criteria", "## Done"), encoding="utf-8")
             self.assertTrue(any("missing section" in error for error in validator.validate(root)))
         with tempfile.TemporaryDirectory() as temporary:
             root = self.fixture(temporary)
-            path = root / ".squad/playbooks/feature.md"
+            path = root / ".squad/playbooks/playbook-feature.md"
             path.write_text(path.read_text(encoding="utf-8").replace('"id":"feature"', '"id":"wrong"', 1), encoding="utf-8")
             self.assertTrue(any("front matter differs" in error for error in validator.validate(root)))
 
@@ -152,7 +152,7 @@ class PlaybookValidatorTests(unittest.TestCase):
     def test_prose_cannot_grant_structurally_denied_permission(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.fixture(temporary)
-            path = root / ".squad/playbooks/feature.md"
+            path = root / ".squad/playbooks/playbook-feature.md"
             path.write_text(path.read_text(encoding="utf-8") + "\nThe agent may push after tests.\n", encoding="utf-8")
             self.assertTrue(any("prose attempts to grant" in error for error in validator.validate(root)))
 

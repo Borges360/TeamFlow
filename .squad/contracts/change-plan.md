@@ -31,6 +31,19 @@ change_plan:
       tests: []
       documentation: []
       observability: []
+      journeys:
+        - id: journey-id
+          classification: affected
+          surfaces:
+            api_contracts: affected
+            frontend: not_applicable
+            mobile_webview: not_applicable
+            internal_external_consumers: observed
+            data_analytics: observed
+            infrastructure: not_applicable
+            observability: affected
+            tests: changed
+            documentation: changed
   integration_order: []
   write_boundary: []
   excluded: []
@@ -48,3 +61,4 @@ change_plan:
 - Branch guidance defers to repository-local rules and authorized incident/hotfix procedures.
 - Unknown ownership, business behavior or irreversible impact remains blocking for that decision.
 - Material scope changes create a revised plan and invalidate affected gates.
+- Every impacted journey and each of its standard surfaces has an explicit disposition: `changed`, `affected`, `observed`, `follow-up`, `not_applicable`, or `unknown`.

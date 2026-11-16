@@ -2,6 +2,12 @@
 
 A release of this repository represents a change to the reusable structure or operating behavior of the agentic squad. It is not created for each project task executed with the squad.
 
+## Branch and tag naming
+
+- Work branches must use a typed prefix, such as `feature/<demand-id>-<slug>`; `codex/<name>` is not a valid standalone branch. Codex-originated work uses `feature/codex-<name>`.
+- Release preparation branches must be versioned as `release/<version>`; an unversioned `release` branch is not valid.
+- Every published release must be represented by an immutable annotated tag named `v<version>` (for example, `v0.0.1`). The release branch is preparation-only and does not replace the tag.
+
 ## Release-eligible changes
 
 - mandatory behavior in `AGENTS.md` or `.squad/policies/`;

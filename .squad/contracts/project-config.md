@@ -1,6 +1,6 @@
 # Contract: Project Configuration
 
-The `.project/` directory supplies replaceable context for one squad/project while `.squad/` remains reusable.
+The legacy `.project/` directory is a distributed example only. Active local configuration lives outside checkouts at `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/project-config.yaml`, while `.squad/` remains the installed reusable base pinned by version and manifest hash.
 
 ## Required project information
 
@@ -30,7 +30,8 @@ project:
       applicability: conditional # always | conditional
       accountable_role: local-reviewer
   workspace:
-    checkout_root: runtime-managed
+    checkout_root: workspace/repositories
+    demand_worktrees: state/worktrees
     allow_reuse_clean_checkout: true
   branching:
     preferred_base: develop
@@ -41,7 +42,7 @@ project:
     fallback_root: docs
     adr_path: docs/architecture/decisions
   delivery_records:
-    path: deliveries
+    path: workspace/deliveries
     git_ignored: true
   delegation_limits:
     max_depth: 1
@@ -60,5 +61,8 @@ project:
 - Project gate entries use unique IDs, declare applicability and accountable role, and cannot collide with `.squad/registries/gates.yaml`.
 - Use `project_gates: []` when no local gate exists. The validator supports the block-list shape shown above; aliases and inline object lists are outside the supported configuration subset.
 - Local configuration cannot silently weaken universal policies; deviations use the exception/governance process.
-- `runtime-managed` keeps product checkouts outside this template. Documentation uses the configured repository when present, otherwise the owner repository convention or `docs/` fallback.
+- `workspace/repositories` keeps persistent product navigation checkouts outside this template; write work happens only in `state/worktrees/<demand-id>`. Documentation uses the configured repository when present, otherwise the owner repository convention or `docs/` fallback.
 - `delivery_records.path` is runtime-local and Git-ignored. It is not a documentation repository and must not be promoted to squad release branches.
+- A project is never global: its `team_id` must match the containing team and all project commands resolve through the active team.
+- `team_snapshot` and `agents_snapshot` are captured at creation. Team changes cannot mutate them; comparison/update is explicit, attributed, backed up in history and content-addressed.
+- Effective context, generated runtime files, deliveries, evidence and history remain under the private project root and are not copied into product repositories by default.

@@ -1,12 +1,12 @@
 ---
-{"schema_version":"1.0","id":"tests","version":"1.0","aliases":["test"],"workflow":"feature","side_effect_class":"repository-write","permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
+{"schema_version":"1.1","id":"tests","name":"Tests","version":"1.0","optional_invocation":true,"aliases":["test"],"path":".squad/playbooks/playbook-tests.md","primary_workflow":"feature","side_effect_class":"repository-write","invocation_examples":["Use o playbook tests para ampliar a regressão.","Use .squad/playbooks/playbook-tests.md.","Crie os testes solicitados."],"always_required":{"roles":[],"artifacts":[],"gates":[]},"conditional_activation":[],"outputs":[],"stop_conditions":[],"permissions":{"requires_repository_read":true,"may_write_files":true,"may_create_local_branch":true,"may_push":false,"may_merge":false,"may_deploy":false,"may_release":false,"may_delete":false}}
 ---
 # Playbook: tests
 
 ## Purpose
 Create, correct, or extend tests tied to requirements, risks, or regressions.
 ## When to use
-Use `/tests <objective>` for unit, component, integration, contract, E2E, accessibility, security, performance, or resilience coverage.
+Use the `tests` playbook for unit, component, integration, contract, E2E, accessibility, security, performance, or resilience coverage.
 ## Do not use when
 Do not create tests without a meaningful oracle or alter production merely to force a scenario.
 ## Inputs and autonomous discovery

@@ -2,9 +2,9 @@
 
 ## Bootstrap
 
-1. Configure the tool to read root `AGENTS.md` as project instructions, or provide that file as the initial project context.
-2. Keep `.squad/` available as the reusable instruction library and `.project/` as project context.
-3. Let one native session/agent act as lead and maintain `deliveries/<demand-id>/`.
+1. Resolve the durable workspace with `teamflow project path <project-id> --team <team-id>` and start work with `teamflow demand exec <demand-id> --project <project-id> --team <team-id> -- <runtime>`.
+2. Read the generated demand-worktree entrypoint and the pinned immutable base; do not require `.project/` in a product checkout.
+3. Let one native session/agent act as lead and maintain `workspace/deliveries/<demand-id>/` only beneath that private project root.
 
 ## Roles and delegation
 

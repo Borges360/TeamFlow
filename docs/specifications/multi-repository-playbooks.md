@@ -1,4 +1,6 @@
-# Especificação — playbooks operacionais da Squad Agêntica
+# Especificação histórica — playbooks operacionais da Squad Agêntica
+
+> Superseded in 0.1.1 by the optional nine-playbook catalog, standardized `playbook-*.md` paths, semantic workflow routing and technical discovery in `.squad/playbooks/README.md`. Eight-playbook constraints below describe the earlier baseline only.
 
 - Status: `implemented` no template `1.2.0`
 - Natureza: manutenção estrutural do produto squad-agentica; não é um delivery de projeto.
