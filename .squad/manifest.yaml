@@ -35,10 +35,7 @@ required_files:
   - src/process.js
   - src/version.js
   - src/storage.js
-  - src/commands/install.js
   - src/commands/local.js
-  - src/commands/shared.js
-  - src/commands/update.js
   - squad.yaml
   - .squad/README.md
   - .squad/agents/requirement-analyst.md
@@ -170,7 +167,5 @@ required_files:
   - scripts/package/test-packed-package.mjs
   - scripts/package/verify-release.mjs
   - test/helpers.js
-  - test/install.test.js
-  - test/update.test.js
   - test/version-and-cli.test.js
   - test/teamflow-local.test.js

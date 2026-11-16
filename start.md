@@ -78,7 +78,17 @@ A presença de uma tecnologia, isoladamente, não justifica criar outro agente.
 
 ## 3. Inicie uma tarefa com segurança
 
-Leia primeiro as regras de branch do repositório. Quando o projeto usar `develop` e permitir esse modelo, crie uma branch dedicada:
+Prepare primeiro o home privado e o workspace duradouro. Não há ativação global de projeto: cada comando pode receber `--team` e a execução da demanda recebe também `--project`.
+
+```text
+npx teamflow setup
+teamflow project path <project-id> --team <team-id>
+teamflow repository add <repository-id> --project <project-id> --team <team-id> --remote <remote>
+teamflow demand create <demand-id> --project <project-id> --team <team-id> --title <título> --file <demanda.txt>
+teamflow demand exec <demand-id> --project <project-id> --team <team-id> -- <runtime>
+```
+
+O runtime inicia em `state/worktrees/<demand-id>/`, com um `AGENTS.md` gerado, a base pinada e os worktrees corretos. Leia então as regras de branch de cada repositório. Quando ele usar `develop` e permitir esse modelo, use uma branch dedicada no worktree:
 
 ```text
 git switch develop
@@ -88,7 +98,7 @@ git switch -c feature/<demand-id>-<descricao-curta>
 
 Essa é uma recomendação, não uma autorização para ignorar GitFlow, trunk-based development, release trains, hotfixes ou políticas protegidas do projeto. Registre qualquer desvio no change plan. Push, merge, deploy e release exigem suas próprias autorizações.
 
-Depois preserve a demanda, gere um demand ID, selecione o workflow e use o diretório privado do projeto em `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/`.
+Depois preserve a demanda, gere um demand ID, selecione o workflow e use o diretório privado em `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/workspace/deliveries/<demand-id>/`. Projetos legados mantêm a raiz `deliveries/` já existente, sem movimentação automática.
 
 ## 4. Analise o que precisará mudar antes de implementar
 
@@ -122,12 +132,12 @@ Execute localmente apenas o que for seguro e autorizado. A pipeline oficial cont
 Escolha um piloto pequeno, reversível, de um único repositório e com critério de sucesso observável. Evite começar por produção, migração irreversível ou mudança regulada.
 
 1. Prepare `.project/` e valide em modo `active`.
-2. Escolha a demanda piloto e crie a branch permitida pelo projeto.
+2. Associe os repositórios persistentes, crie a demanda piloto e execute o runtime no worktree permitido pelo projeto.
 3. Envie o prompt abaixo.
 4. Revise requisitos, contexto e change impact antes de autorizar implementação.
 5. Deixe o agente implementar somente as peças aprovadas.
 6. Execute testes e os estágios aplicáveis da pipeline.
-7. Confira evidências, gates, revisão principal e resumo no diretório privado `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/`.
+7. Confira evidências, gates, revisão principal e resumo no diretório privado `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/workspace/deliveries/<demand-id>/`.
 8. Registre tokens, custo e latência somente se o runtime fornecer esses valores; compare qualidade antes de concluir que houve melhoria.
 
 ## Prompt de exemplo
@@ -145,10 +155,11 @@ Antes de implementar:
    contratos, dados, testes, documentação, observabilidade e pipeline
    possivelmente afetados;
 5. descubra e siga a CI/CD existente;
-6. se as regras locais permitirem, use uma branch
+6. execute pelo `teamflow demand exec` para usar somente os worktrees da demanda;
+7. se as regras locais permitirem, use uma branch
    feature/<demand-id>-<descricao-curta> criada a partir de develop.
 
-Registre artefatos e evidências somente em TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/. Pare com
+Registre artefatos e evidências somente em TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/workspace/deliveries/<demand-id>/. Pare com
 NEEDS_USER_INPUT ou BLOCKED se faltar regra de negócio, acesso, autorização,
 evidência obrigatória ou se uma decisão material não puder ser descoberta.
 Não faça push, merge, deploy, release ou ação destrutiva sem autorização explícita.
@@ -172,7 +183,7 @@ flowchart TD
   I --> J
   J --> H1[Descobrir e classificar repositórios]
   H1 --> H2[Verificar acesso, owners e autorização]
-  H2 --> H3[Preparar checkouts seguros fora da squad]
+  H2 --> H3[Associar checkout persistente e criar worktrees da demanda]
   H3 --> I1[Criar repository plans e analisar peças]
   I1 --> J1[Descobrir pipeline CI/CD existente]
   J1 --> K[Planejar design, riscos, integração e rollback]
@@ -202,7 +213,7 @@ flowchart TD
 
 Uma feature que adiciona uma fila pode envolver `customer-api` (contrato e produtor), `customer-infra` (fila e permissões) e `customer-tests` (contrato e jornada). O agente cria um `repository-plan` por repositório, cada um com remote verificado, owner, base/revisão, branch, limites de escrita e pipeline. Uma ordem possível é infraestrutura compatível primeiro, aplicação depois e testes por último; ela só é adotada após verificar contratos, rollback e regras locais. Sucesso em dois repositórios não oculta falha no terceiro, e nenhuma branch é publicada automaticamente.
 
-Documentação transversal vai ao repositório com `documentation_role: canonical-shared`. Sem esse repositório, vai a `docs/` do repositório proprietário. `deliveries/` guarda somente registros locais privados em `TEAMFLOW_HOME`, nunca no checkout deste template ou do produto.
+Documentação transversal vai ao repositório com `documentation_role: canonical-shared`. Sem esse repositório, vai a `docs/` do repositório proprietário. `workspace/deliveries/` guarda somente registros locais privados em `TEAMFLOW_HOME`, nunca no checkout deste template ou do produto.
 
 ## Quando criar uma release
 

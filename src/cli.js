@@ -1,16 +1,15 @@
 import { PRODUCT } from "./config.js";
-import { installCommand } from "./commands/install.js";
 import {
   catalogCommand,
+  demandCommand,
   doctorCommand,
-  exportCommand,
   playbookCommand,
   projectCommand,
+  repositoryCommand,
   setupCommand,
   teamCommand,
   workflowCommand,
 } from "./commands/local.js";
-import { updateCommand } from "./commands/update.js";
 import { UserError } from "./errors.js";
 import { TeamFlowStore, resolveTeamFlowHome } from "./storage.js";
 
@@ -19,14 +18,13 @@ const HELP = `teamFlow v${PRODUCT.version}
 Uso:
   teamflow setup [--resume|--dry-run|--non-interactive --config <arquivo>]
   teamflow team <create|list|show|use|configure|agents>
-  teamflow project <create|list|activate|status|archive|compare|update-snapshot>
+  teamflow project <create|list|path|status|archive|upgrade-base|rollback-base>
+  teamflow repository <add|attach|status|sync|detach> --project <project-id>
+  teamflow demand <create|list|exec> --project <project-id>
   teamflow doctor
-  teamflow export <team|project>
   teamflow catalog <add-repository|add-system|add-journey|import>
   teamflow playbook <list|show>
   teamflow workflow show <id>
-  teamflow install [diretório]   Instala a release correspondente à CLI
-  teamflow update [diretório]    Atualiza uma instalação Git existente
   teamflow --version             Exibe a versão da CLI
   teamflow --help                Exibe esta ajuda
 
@@ -37,13 +35,12 @@ const COMMANDS = new Map([
   ["setup", setupCommand],
   ["team", teamCommand],
   ["project", projectCommand],
+  ["repository", repositoryCommand],
+  ["demand", demandCommand],
   ["doctor", doctorCommand],
-  ["export", exportCommand],
   ["catalog", catalogCommand],
   ["playbook", playbookCommand],
   ["workflow", workflowCommand],
-  ["install", installCommand],
-  ["update", updateCommand],
 ]);
 
 function extractHome(argv) {

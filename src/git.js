@@ -1,195 +1,44 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { UserError } from "./errors.js";
 import { runCommand } from "./process.js";
 
 let safetyEnvironment;
-
-function gitSafetyEnvironment() {
-  if (safetyEnvironment) {
-    return safetyEnvironment;
-  }
-  const root = mkdtempSync(path.join(os.tmpdir(), "teamflow-git-safety-"));
-  const hooksPath = path.join(root, "hooks");
-  const globalConfig = path.join(root, "global.gitconfig");
-  mkdirSync(hooksPath);
-  writeFileSync(globalConfig, "", "utf8");
-  safetyEnvironment = { root, hooksPath, globalConfig };
-  process.once("exit", () => rmSync(root, { recursive: true, force: true }));
-  return safetyEnvironment;
+function safety() {
+  if (safetyEnvironment) return safetyEnvironment;
+  const root = mkdtempSync(path.join(os.tmpdir(), "teamflow-git-safety-")); const hooksPath = path.join(root, "hooks"); const globalConfig = path.join(root, "global.gitconfig");
+  mkdirSync(hooksPath); writeFileSync(globalConfig, "", "utf8"); safetyEnvironment = { root, hooksPath, globalConfig }; process.once("exit", () => rmSync(root, { recursive: true, force: true })); return safetyEnvironment;
 }
-
-function sanitizedGitEnvironment(globalConfig) {
-  const environment = { ...process.env };
-  for (const key of Object.keys(environment)) {
-    if (
-      key.toUpperCase().startsWith("GIT_")
-      || ["CURL_CA_BUNDLE", "SSL_CERT_DIR", "SSL_CERT_FILE", "SSH_ASKPASS"].includes(key.toUpperCase())
-    ) {
-      delete environment[key];
-    }
-  }
-  environment.GIT_CONFIG_GLOBAL = globalConfig;
-  environment.GIT_CONFIG_NOSYSTEM = "1";
-  environment.GIT_TERMINAL_PROMPT = "0";
-  return environment;
-}
-
-function commandDetail(result) {
-  return (result.stderr || result.stdout || "Erro Git sem detalhes.").trim();
-}
+function environment(globalConfig) { const env = { ...process.env }; for (const key of Object.keys(env)) if (key.toUpperCase().startsWith("GIT_") || ["CURL_CA_BUNDLE", "SSL_CERT_DIR", "SSL_CERT_FILE", "SSH_ASKPASS"].includes(key.toUpperCase())) delete env[key]; return { ...env, GIT_CONFIG_GLOBAL: globalConfig, GIT_CONFIG_NOSYSTEM: "1", GIT_TERMINAL_PROMPT: "0" }; }
 
 export class GitClient {
-  constructor(runner = runCommand) {
-    this.runner = runner;
-    this.safety = gitSafetyEnvironment();
-  }
-
+  constructor(runner = runCommand) { this.runner = runner; this.safety = safety(); }
   run(args, { cwd, action = "O comando Git falhou.", allowFailure = false } = {}) {
-    const safeArgs = [
-      "-c",
-      `core.hooksPath=${this.safety.hooksPath}`,
-      "-c",
-      "core.fsmonitor=false",
-      ...args,
-    ];
-    const result = this.runner("git", safeArgs, {
-      cwd,
-      env: sanitizedGitEnvironment(this.safety.globalConfig),
-    });
-    if (result.error?.code === "ENOENT") {
-      throw new UserError(
-        "Git não foi encontrado. Instale o Git, confirme que ele está no PATH e tente novamente.",
-        { cause: result.error },
-      );
-    }
-    if (result.error) {
-      throw new UserError(`${action}\n\n${result.error.message}`, { cause: result.error });
-    }
-    if (result.status !== 0 && !allowFailure) {
-      throw new UserError(`${action}\n\n${commandDetail(result)}`);
-    }
+    const result = this.runner("git", ["-c", `core.hooksPath=${this.safety.hooksPath}`, "-c", "core.fsmonitor=false", ...args], { cwd, env: environment(this.safety.globalConfig) });
+    if (result.error?.code === "ENOENT") throw new UserError("Git não foi encontrado. Instale-o e confirme que está no PATH.", { cause: result.error });
+    if (result.error) throw new UserError(`${action}\n\n${result.error.message}`, { cause: result.error });
+    if (result.status !== 0 && !allowFailure) throw new UserError(`${action}\n\n${(result.stderr || result.stdout || "Erro Git sem detalhes.").trim()}`);
     return result;
   }
-
-  ensureAvailable() {
-    this.run(["--version"], { action: "Não foi possível executar o Git." });
+  ensureAvailable() { this.run(["--version"], { action: "Não foi possível executar o Git." }); }
+  pathExists(target) { return existsSync(target); }
+  topLevel(directory) { return this.run(["-C", directory, "rev-parse", "--show-toplevel"], { action: `Checkout Git inválido: ${directory}` }).stdout.trim(); }
+  remoteUrl(root) { return this.run(["-C", root, "remote", "get-url", "origin"], { action: `Remote origin inválido: ${root}` }).stdout.trim(); }
+  status(root) { return this.run(["-C", root, "status", "--porcelain=v1", "--untracked-files=all"], { action: `Não foi possível verificar alterações em ${root}.` }).stdout; }
+  operationInProgress(root) {
+    const probe = this.run(["-C", root, "rev-parse", "-q", "--verify", "MERGE_HEAD"], { action: "", allowFailure: true });
+    if (probe.status === 0) return true;
+    const gitDir = this.run(["-C", root, "rev-parse", "--git-dir"], { action: `Não foi possível inspecionar ${root}.` }).stdout.trim();
+    return ["rebase-merge", "rebase-apply", "CHERRY_PICK_HEAD", "REVERT_HEAD", "BISECT_LOG"].some((item) => existsSync(path.resolve(root, gitDir, item)));
   }
-
-  clone(repositoryUrl, tag, destination) {
-    this.run(
-      [
-        "clone",
-        "--branch",
-        tag,
-        "--depth",
-        "1",
-        "--no-recurse-submodules",
-        "--",
-        repositoryUrl,
-        destination,
-      ],
-      { action: `Não foi possível baixar a release ${tag}. Verifique a rede e a disponibilidade do repositório.` },
-    );
-  }
-
-  topLevel(directory) {
-    return this.run(["-C", directory, "rev-parse", "--show-toplevel"], {
-      action: `Nenhuma instalação Git válida foi encontrada em ${directory}.`,
-    }).stdout.trim();
-  }
-
-  remoteUrl(root) {
-    return this.run(["-C", root, "remote", "get-url", "origin"], {
-      action: "A instalação não possui um remote 'origin' válido.",
-    }).stdout.trim();
-  }
-
-  status(root) {
-    return this.run(
-      ["-C", root, "status", "--porcelain=v1", "--untracked-files=all"],
-      { action: "Não foi possível verificar alterações locais." },
-    ).stdout;
-  }
-
-  ignoredPaths(root) {
-    return this.run(
-      ["-C", root, "ls-files", "--others", "--ignored", "--exclude-standard", "-z"],
-      { action: "Não foi possível inspecionar arquivos locais ignorados." },
-    ).stdout.split("\0").filter(Boolean);
-  }
-
-  trackedPathsAt(root, reference) {
-    return this.run(["-C", root, "ls-tree", "-r", "--name-only", "-z", reference], {
-      action: `Não foi possível inspecionar os arquivos gerenciados em ${reference}.`,
-    }).stdout.split("\0").filter(Boolean);
-  }
-
-  unsafeLocalConfig(root) {
-    const keys = this.run(["-C", root, "config", "--local", "--name-only", "--list"], {
-      action: "Não foi possível inspecionar a configuração Git local.",
-    }).stdout.split(/\r?\n/u).map((line) => line.trim().toLowerCase()).filter(Boolean);
-    const unsafe = [
-      /^core\.(hookspath|fsmonitor|sshcommand)$/u,
-      /^filter\..*\.(clean|smudge|process)$/u,
-      /^url\..*\.insteadof$/u,
-      /^http\./u,
-      /^credential(?:\..*)?\..*$/u,
-      /^remote\..*\.proxy$/u,
-    ];
-    return keys.filter((key) => unsafe.some((pattern) => pattern.test(key)));
-  }
-
-  tagsAtHead(root) {
-    return this.run(["-C", root, "tag", "--points-at", "HEAD", "--list", "v*"], {
-      action: "Não foi possível identificar a versão instalada.",
-    }).stdout.split(/\r?\n/u).map((line) => line.trim()).filter(Boolean);
-  }
-
-  tagObjectType(root, tag) {
-    const result = this.run(["-C", root, "cat-file", "-t", `refs/tags/${tag}`], {
-      action: `Não foi possível validar a tag ${tag}.`,
-      allowFailure: true,
-    });
-    return result.status === 0 ? result.stdout.trim() : null;
-  }
-
-  currentCommit(root) {
-    return this.resolveCommit(root, "HEAD");
-  }
-
-  resolveCommit(root, reference) {
-    return this.run(["-C", root, "rev-parse", `${reference}^{commit}`], {
-      action: `Não foi possível resolver ${reference} para um commit.`,
-    }).stdout.trim();
-  }
-
-  remoteTagCommit(root, repositoryUrl, tag) {
-    const result = this.run(
-      ["-C", root, "ls-remote", "--tags", repositoryUrl, `refs/tags/${tag}`, `refs/tags/${tag}^{}`],
-      { action: `Não foi possível validar ${tag} no repositório oficial.` },
-    );
-    const peeledRef = `refs/tags/${tag}^{}`;
-    for (const line of result.stdout.split(/\r?\n/u)) {
-      const [commit, reference] = line.trim().split(/\s+/u);
-      if (reference === peeledRef) {
-        return commit;
-      }
-    }
-    return null;
-  }
-
-  fetchTag(root, repositoryUrl, tag) {
-    this.run(
-      ["-C", root, "fetch", "--no-recurse-submodules", "--no-tags", repositoryUrl, "tag", tag],
-      { action: `Não foi possível obter a tag ${tag}. Verifique a rede e se a release existe.` },
-    );
-  }
-
-  checkoutDetached(root, reference) {
-    this.run(["-C", root, "checkout", "--detach", reference], {
-      action: `Não foi possível aplicar ${reference}.`,
-    });
+  cloneMirror(remote, destination) { this.run(["clone", "--mirror", "--no-recurse-submodules", "--", remote, destination], { action: `Não foi possível criar o cache Git de ${remote}.` }); }
+  cloneCheckout(cache, remote, destination) { this.run(["clone", "--reference-if-able", cache, "--", cache, destination], { action: `Não foi possível criar checkout persistente em ${destination}.` }); this.run(["-C", destination, "remote", "set-url", "origin", remote], { action: "Não foi possível configurar o remote do checkout." }); }
+  fetchBare(cache) { this.run(["--git-dir", cache, "fetch", "--prune", "origin"], { action: `Não foi possível sincronizar cache ${cache}.` }); }
+  fetch(root) { this.run(["-C", root, "fetch", "--prune", "origin"], { action: `Não foi possível sincronizar checkout ${root}.` }); }
+  defaultBranch(root) { const result = this.run(["-C", root, "symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"], { action: "", allowFailure: true }); return result.status === 0 ? result.stdout.trim().replace(/^origin\//u, "") : null; }
+  addWorktree(root, destination, branch, startPoint) {
+    const existing = this.run(["-C", root, "show-ref", "--verify", "--quiet", `refs/heads/${branch}`], { action: "", allowFailure: true });
+    this.run(existing.status === 0 ? ["-C", root, "worktree", "add", "--", destination, branch] : ["-C", root, "worktree", "add", "-b", branch, "--", destination, startPoint], { action: `Não foi possível criar worktree ${destination}.` });
   }
 }

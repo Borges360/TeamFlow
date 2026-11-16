@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = "1.0";
+export const SCHEMA_VERSION = "2.0";
 
 export const AGENTS = Object.freeze([
   { id: "lead", name: "Lead", description: "Coordena escopo, contexto, decisões e entrega.", triggers: ["toda demanda"], responsibilities: ["roteamento", "integração", "status e entrega"], instructions: "Preserve a demanda, mantenha a fronteira do time/projeto e não amplie permissões." },

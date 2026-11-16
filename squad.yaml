@@ -5,10 +5,10 @@ metadata:
   version: 0.1.1
 spec:
   entrypoint: AGENTS.md
-  universal_base: TEAMFLOW_HOME/metadata/bases/<package-version>/.squad
+  universal_base: TEAMFLOW_HOME/internal/bases/<version>-<manifest-hash>/.squad
   project_context: TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/effective-context
-  delivery_path_pattern: TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>
-  manifest: TEAMFLOW_HOME/metadata/bases/<package-version>/.squad/manifest.yaml
+  delivery_path_pattern: TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/workspace/deliveries/<demand-id>
+  manifest: TEAMFLOW_HOME/internal/bases/<version>-<manifest-hash>/.squad/manifest.yaml
   execution_model: native-development-agent-runtime
   adoption:
     mode: template

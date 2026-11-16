@@ -1,0 +1,45 @@
+{
+  "schema": "harness/project/v1",
+  "id": "squad-agentica",
+  "name": "TeamFlow",
+  "sourceRoot": "../workspace",
+  "sourceVersion": "0.3.0",
+  "kind": "node",
+  "manager": "npm",
+  "runtime": "node",
+  "worktreeOf": null,
+  "commands": {
+    "install": "npm ci --ignore-scripts",
+    "lint": null,
+    "test": "npm test",
+    "build": "npm run build",
+    "dev": null,
+    "compose": null,
+    "composeUp": null,
+    "composeDown": null,
+    "check": "npm run check",
+    "testPackage": "npm run test:package"
+  },
+  "gitflow": {
+    "main": "main",
+    "develop": "develop",
+    "featurePrefix": "feature/",
+    "featurePrefixes": [
+      "feature/",
+      "codex/"
+    ],
+    "releasePrefix": "release/",
+    "hotfixPrefix": "hotfix/",
+    "allowDirectPushToMain": false
+  },
+  "memory": {
+    "workspace": "homelab",
+    "server": "https://memory.lab/mcp",
+    "tokenEnv": "AI_MEMORY_TOKEN",
+    "project": "squad-agentica"
+  },
+  "designSystem": null,
+  "guardrails": [],
+  "pipelines": [],
+  "memoryScopeVerified": false
+}

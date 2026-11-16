@@ -1,19 +1,16 @@
 {
   "name": "teamflow",
   "version": "0.1.1",
-  "description": "CLI local do teamFlow para times reutilizáveis, projetos isolados e setup via npx.",
+  "private": true,
+  "description": "CLI local do teamFlow para times reutilizáveis, projetos isolados e setup local.",
   "type": "module",
   "bin": {
     "teamflow": "bin/teamflow.js"
   },
   "files": [
     "bin/",
-    "src/",
-    ".squad/",
-    "AGENTS.md",
-    "squad.yaml",
-    "start.md",
-    "docs/local-teams-cli.md"
+    "dist/",
+    "runtime-assets/"
   ],
   "engines": {
     "node": ">=22.14.0",
@@ -21,10 +18,11 @@
   },
   "packageManager": "npm@11.9.0",
   "scripts": {
-    "check": "npm run check:runtime && npm run check:versions && npm test",
+    "build": "node scripts/package/build-runtime.mjs",
+    "check": "npm run build && npm run check:runtime && npm run check:versions && npm test",
     "check:runtime": "node scripts/package/check-runtime.mjs",
     "check:versions": "node scripts/package/check-versions.mjs",
-    "test": "node --test --test-reporter=spec test/install.test.js test/update.test.js test/version-and-cli.test.js test/teamflow-local.test.js",
+    "test": "node --test --test-reporter=spec test/version-and-cli.test.js test/teamflow-local.test.js",
     "test:package": "node scripts/package/test-packed-package.mjs",
     "release:verify": "node scripts/package/verify-release.mjs",
     "prepack": "npm run check",
@@ -45,10 +43,5 @@
     "engineering",
     "teamflow"
   ],
-  "license": "UNLICENSED",
-  "publishConfig": {
-    "access": "public",
-    "provenance": true,
-    "registry": "https://registry.npmjs.org/"
-  }
+  "license": "UNLICENSED"
 }

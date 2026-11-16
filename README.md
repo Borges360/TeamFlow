@@ -1,183 +1,109 @@
-# Universal Agentic Squad Template
+# TeamFlow
 
-A reusable, vendor-neutral engineering template that tells development agents how to receive a demand, discover context, choose a workflow, delegate responsibilities, implement safely, review, test, produce evidence, and decide completion.
+TeamFlow combines a reusable, vendor-neutral engineering workflow with a local CLI for organizing teams, projects, repositories and delivery workspaces.
 
-The repository is intentionally documentation and configuration first. Codex, Claude Code, Devin, and other products provide execution; this template provides the operating model.
+**Manifest:** `teamflow` · **version:** `0.1.1` · **license:** `UNLICENSED`
+**Distribution:** internal; A22 excludes TeamFlow from npm distribution in this plan. No public npm route or registry publication is configured.
+**Runtime:** Node.js `>=22.14.0`; npm `>=11.5.1` (`npm@11.9.0` package manager metadata).
 
-MCP and A2A are not implemented in this version.
+## English
 
-## Setup rápido com npx
+### What it does
 
-O pacote npm expõe a CLI local `teamflow`. Ela cria times reutilizáveis e projetos isolados no diretório privado do usuário, sem fork, banco, serviço, credenciais ou clone de repositórios de produto.
+The repository provides portable agent instructions, workflows, contracts, policies, playbooks, templates and runtime guidance. The `teamflow` CLI keeps reusable team configuration and project workspaces in a private local home. It is a workflow and storage tool; it is not an agent runtime, hosted service, database, MCP server or A2A implementation.
 
-Pré-requisitos: Node.js 22.14 ou superior, npm e Git disponíveis no `PATH`.
+### Install and run locally
 
-```bash
-npx teamflow setup
+TeamFlow is internal and has no npm distribution route in this plan. This README does not claim that `npx teamflow` or a global npm installation is available. For local development from this checkout, use the repository's Node.js/npm requirements:
+
+```sh
+npm ci --ignore-scripts
+npm test
+node bin/teamflow.js --help
+node bin/teamflow.js --version
 ```
 
-No Windows, o local padrão é `%USERPROFILE%\.teamFlow`; no macOS e Linux, `$HOME/.teamFlow`. Use `TEAMFLOW_HOME` ou `--home <path>` para uma sobrescrita explícita.
+The CLI help is currently Portuguese. The documentation is in English and Brazilian Portuguese; the CLI has no language selector.
 
-O wizard toma no máximo quatro decisões principais: time, Git/commits, agents disponíveis e primeiro projeto opcional. Também há modos retomável, idempotente, dry-run e não interativo:
+### Use
 
-```bash
-teamflow setup --resume
-teamflow setup --dry-run
-teamflow setup --non-interactive --config setup.json
+The root command `teamflow setup` opens the initial setup flow. Use `--dry-run` to inspect the proposed setup, or `--non-interactive --config <file>` with a configuration file. The CLI also provides `team`, `project`, `repository`, `demand`, `doctor`, `catalog`, `playbook` and `workflow` command groups. See [local teams and projects](docs/local-teams-cli.md) for the supported subcommands and their effects.
+
+```sh
+node bin/teamflow.js setup --dry-run
+node bin/teamflow.js team show <team-id>
+node bin/teamflow.js project path <project-id> --team <team-id>
+node bin/teamflow.js repository status --project <project-id> --team <team-id>
+node bin/teamflow.js demand list --project <project-id> --team <team-id>
 ```
 
-Times são a fronteira de isolamento. Não existe projeto global: antes de listar, ativar ou alterar um projeto, selecione seu time.
+Select the team explicitly in concurrent work. There is no global active project. A demand runtime starts only through the explicit `demand exec ... -- <runtime>` command.
 
-```bash
-teamflow team use comprovantes
-teamflow project create filtros-comprovante
-teamflow project activate filtros-comprovante
+### Configuration and state
+
+The default home is `%USERPROFILE%\.teamFlow` on Windows and `$HOME/.teamFlow` on macOS/Linux. Set `TEAMFLOW_HOME` or pass `--home <path>` to choose another location. Team configuration, project metadata, repository bindings and delivery data are local files under that home. Existing product repositories are not copied into the template repository; repository and worktree commands operate only after the user selects them.
+
+### Privacy and security
+
+Treat the TeamFlow home as private: it can contain project descriptions, repository paths, demands and delivery metadata. Help and version do not initialize that home. Repository commands may access Git remotes when explicitly invoked; `demand exec` launches the selected native runtime. TeamFlow does not provide hosted storage or automatic publication. Use synthetic data when testing and review the selected project and remote before repository operations.
+
+### Architecture, adoption and limits
+
+Start with the [adoption guide](docs/adoption.md), [architecture](docs/architecture.md), [runtime instructions](docs/using-with-runtimes.md), or [start guide](start.md). `.squad/` is the reusable operating model; `.project/` contains contextual examples that must be replaced during adoption. MCP and A2A are not implemented in this version.
+
+The release workflow validates the internal package on a release event, without publishing it to npm. Registry availability, provenance and a public artifact are not part of this plan.
+
+### License
+
+The product manifest is `UNLICENSED`; no license for the TeamFlow product is claimed. The bundled INTEIRO mark has a separate attribution/license notice at [docs/assets/INTEIRO-MARK-LICENSE.txt](docs/assets/INTEIRO-MARK-LICENSE.txt).
+
+## Português (Brasil)
+
+### O que faz
+
+O repositório oferece instruções portáveis para agentes, workflows, contratos, políticas, playbooks, templates e orientações de runtime. A CLI `teamflow` mantém configuração reutilizável de times e workspaces de projetos em um diretório local privado. Ela organiza workflows e armazenamento; não é um runtime de agentes, serviço hospedado, banco de dados, servidor MCP ou implementação A2A.
+
+### Instalação e execução local
+
+TeamFlow é interno e não tem rota de distribuição npm neste plano. Este README não afirma que `npx teamflow` ou a instalação npm global estejam disponíveis. Para desenvolvimento local neste checkout, use os requisitos Node.js/npm do projeto:
+
+```sh
+npm ci --ignore-scripts
+npm test
+node bin/teamflow.js --help
+node bin/teamflow.js --version
 ```
 
-Consulte [CLI local, times e projetos](docs/local-teams-cli.md) para comandos, layout, snapshots, agents, exportação e política `ready_for_push`. Os comandos legados `install`/`update` continuam disponíveis para checkouts de releases Git imutáveis e nunca descartam alterações locais; veja [distribuição npm e segurança](docs/npm-distribution.md).
+A ajuda da CLI está atualmente em português. A documentação está em inglês e português do Brasil; a CLI não tem seletor de idioma.
 
-## What is universal and what is contextual
+### Uso
 
-```text
-.squad/  reusable and definitive operating model
-    +
-.project/ project/squad-specific example configuration
-    =
-effective instructions used by the active development agent
+O comando raiz `teamflow setup` inicia o fluxo de configuração. Use `--dry-run` para inspecionar a proposta ou `--non-interactive --config <arquivo>` com um arquivo de configuração. Também existem os grupos `team`, `project`, `repository`, `demand`, `doctor`, `catalog`, `playbook` e `workflow`. Consulte [times e projetos locais](docs/local-teams-cli.md) para os subcomandos e efeitos suportados.
+
+```sh
+node bin/teamflow.js setup --dry-run
+node bin/teamflow.js team show <team-id>
+node bin/teamflow.js project path <project-id> --team <team-id>
+node bin/teamflow.js repository status --project <project-id> --team <team-id>
+node bin/teamflow.js demand list --project <project-id> --team <team-id>
 ```
 
-Everything in `.squad/` is designed to work for any engineering squad. Everything in `.project/` is explicitly marked `EXAMPLE` and reflects the initial squad context supplied for this template; replace it when adopting the template.
+Selecione o time explicitamente em trabalhos concorrentes. Não existe projeto ativo global. Um runtime só é iniciado pelo comando explícito `demand exec ... -- <runtime>`.
 
-## Repository structure
+### Configuração e dados
 
-```text
-.
-├── AGENTS.md                         universal entry point for development agents
-├── squad.yaml                        small declarative index, not an executable config
-├── .squad/
-│   ├── agents/                       responsibility definitions
-│   ├── workflows/                    feature, bugfix, incident, architecture, migration, performance
-│   ├── playbooks/                    nine optional load-on-demand recipes
-│   ├── policies/                     routing, context, delegation, gates, evidence, governance
-│   ├── contracts/                    portable task/result/artifact/user-input contracts
-│   ├── skills/                       load-on-demand engineering procedures
-│   ├── templates/                    reusable delivery artifacts
-│   ├── evals/                        specification-only routing, failure and context cases
-│   ├── runtimes/                     native-runtime mappings, not adapters
-│   └── registries/                   capability and workflow indexes
-├── .project/                          contextual EXAMPLE for the initial squad
-│   ├── catalog/                      example catalog pattern for 100+ repositories
-│   ├── agent-profiles/               example specializations of universal roles
-│   └── skills/                       example technology/domain procedures
-├── docs/                              adoption and architecture guidance
-└── scripts/                           optional deterministic maintenance checks only
-```
+O diretório padrão é `%USERPROFILE%\.teamFlow` no Windows e `$HOME/.teamFlow` no macOS/Linux. Defina `TEAMFLOW_HOME` ou use `--home <path>` para escolher outro local. Configuração de times, metadados de projetos, vínculos com repositórios e dados de entregas são arquivos locais nesse diretório. Repositórios de produto não são copiados para o template; comandos de repositório e worktree só operam após seleção explícita.
 
-## Como utilizar
+### Privacidade e segurança
 
-O modelo é usado pelo agente de desenvolvimento que você já utiliza. Não há serviço para iniciar, banco para configurar ou runtime próprio. A CLI local organiza times e projetos, mas não executa a implementação.
+Trate o diretório TeamFlow como privado: ele pode conter descrições de projetos, caminhos de repositórios, demandas e metadados de entregas. `help` e `version` não inicializam esse diretório. Comandos de repositório podem acessar remotes Git quando chamados explicitamente; `demand exec` inicia o runtime nativo selecionado. TeamFlow não oferece armazenamento hospedado nem publicação automática. Use dados sintéticos nos testes e revise o projeto e o remote selecionados antes de operações de repositório.
 
-Para o caminho completo — preparar um projeto existente, compor responsabilidades pela stack real, criar a primeira branch, mapear peças afetadas, seguir a pipeline e executar o piloto — consulte [start.md](start.md). A CLI é somente uma conveniência de distribuição; o modelo operacional continua independente de Node em runtime.
+### Arquitetura, adoção e limites
 
-### 1. Preparar o contexto do projeto
+Comece pelo [guia de adoção](docs/adoption.md), [arquitetura](docs/architecture.md), [uso com runtimes](docs/using-with-runtimes.md) ou [guia de início](start.md). `.squad/` é o modelo operacional reutilizável; `.project/` contém exemplos contextuais que devem ser substituídos na adoção. MCP e A2A não estão implementados nesta versão.
 
-Execute `teamflow setup`. A configuração reutilizável fica em `teams/<team-id>/` e cada implementação fica em `teams/<team-id>/projects/<project-id>/`, sempre fora do checkout de produto. Evolua o time ativo com `team configure`, `team agents` e `catalog`.
+O workflow valida o pacote interno em um evento de release, sem publicá-lo no npm. Disponibilidade de registry, provenance e artefato público não fazem parte deste plano.
 
-Comece por estes arquivos:
+### Licença
 
-| Arquivo | O que informar |
-|---|---|
-| `.project/context.md` | missão, domínios e características da operação |
-| `.project/squad.md` | responsabilidades, autoridades e especializações locais |
-| `.project/repositories.md` e `catalog/` | sistemas, repositórios, ownership, APIs, eventos e dependências |
-| `.project/constraints.md` | limites de acesso, produção, dados, mudança e aprovações |
-| `.project/quality-profile.md`, `compliance.md` e `observability.md` | gates, controles, evidências, SLOs, alertas e padrões aplicáveis |
-
-Não copie os mais de 100 repositórios para este template: catalogue seus metadados e deixe o agente descobrir somente os que a demanda exige.
-
-### 2. Configurar o runtime nativo
-
-Abra este diretório no Codex, Claude Code, Devin ou outro agente de desenvolvimento e configure o mecanismo nativo de instruções do projeto para ler o arquivo raiz `AGENTS.md`.
-
-- No Codex, abra o workspace contendo `AGENTS.md`.
-- Em outro runtime que use um nome próprio para instruções do projeto, crie apenas um ponteiro curto para `AGENTS.md`; não duplique nem converta a base em um adapter.
-- Use os subagentes, tarefas, worktrees, terminal e revisão que o runtime já oferece. Se não houver delegação nativa, o agente executa as responsabilidades de forma sequencial.
-
-As adaptações disponíveis estão em `.squad/runtimes/`.
-
-### 3. Enviar uma demanda
-
-Forneça a demanda normalmente, em linguagem natural. Exemplo:
-
-```text
-Implemente a nova funcionalidade de consulta de contratos.
-```
-
-Também é possível ser explícito quando desejado:
-
-```text
-Siga o AGENTS.md. Use o contexto efetivo do projeto ativo, carregue repositórios
-progressivamente e registre artefatos apenas no diretório privado desse projeto.
-
-Demanda: corrija a consulta de contratos que retorna dados desatualizados.
-```
-
-O segundo formato é opcional: um runtime corretamente configurado já lê `AGENTS.md`.
-
-Playbooks são opcionais. Você pode escrever “Use o playbook feature”, referenciar `.squad/playbooks/playbook-feature.md` ou enviar somente a demanda em linguagem natural. O workflow continua sendo a fonte de verdade e o roteamento semântico funciona sem playbook. Formas como `/feature` são apenas atalhos textuais de prompt, não comandos nativos do shell/runtime. O catálogo também inclui o discovery técnico opcional.
-
-### 4. O que o agente fará
-
-```text
-Demanda
-  → triagem e workflow adequado
-  → requisitos, contexto mínimo e change plan
-  → descoberta da branch/pipeline do projeto
-  → descoberta progressiva de sistemas e repositórios
-  → arquitetura e revisões especializadas quando houver risco
-  → implementação e testes com evidência
-  → gates e revisão principal
-  → resumo de entrega
-```
-
-Por exemplo, uma mudança apenas de interface pode ativar Software, Quality e Accessibility; uma alteração de API que consulta um sistema de registro pode também ativar Architecture, Security, Reliability, Data ou o perfil Mainframe. A seleção é feita por risco e impacto, não por uma cerimônia fixa.
-
-### 5. Onde acompanhar o trabalho
-
-Para cada demanda, os registros ficam em `%USERPROFILE%\.teamFlow\teams\<team-id>\projects\<project-id>\deliveries\` no Windows (ou no home equivalente), nunca no checkout de produto. Documentação permanente é gravada no repositório canônico ou em `docs/` do repositório proprietário.
-
-O trabalho só deve ser apresentado como concluído quando os gates aplicáveis estiverem resolvidos e as evidências estiverem vinculadas. Se faltarem regra de negócio, autoridade, acesso ou contexto, o agente deve retornar `NEEDS_USER_INPUT` ou `BLOCKED` com a pergunta e o impacto.
-
-Não há pacote Python, serviço, scheduler, banco de dados, máquina de estados ou runtime próprio envolvidos. A CLI npm gerencia apenas estado local e arquivos; o teamFlow continua sendo documentação e configuração consumidas pelo runtime nativo do agente.
-
-## Adoption
-
-1. Copy the template into the coordinating repository for a project or squad.
-2. Replace every `.project/` file marked `EXAMPLE` with real, reviewed context.
-3. Populate the repository catalog incrementally; do not paste repository contents into this repo.
-4. Keep the universal `.squad/` base stable and evolve it through reviewed changes.
-5. Add project skills only for procedures that truly differ from the base.
-6. Configure the active runtime to honor `AGENTS.md` or reference it in its native instructions.
-7. Pilot one controlled demand and review the generated local delivery bundle; do not commit it to release branches.
-
-See [adoption guide](docs/adoption.md), [architecture](docs/architecture.md), and [runtime usage](docs/using-with-runtimes.md).
-
-The replacement of the discarded Python platform is documented in the [implementation correction audit](docs/implementation-correction.md).
-
-## Optional validation
-
-The small validator checks required files, manifest paths, local Markdown links, and accidental reintroduction of platform code:
-
-```text
-python scripts/validate-template.py --mode template
-```
-
-Additional deterministic checks:
-
-```text
-python scripts/validate-evals.py
-python scripts/validate-delivery.py deliveries/<demand-id>
-python -m unittest discover -s scripts/tests -v
-```
-
-They are maintainers' checks, not the squad runtime, and do not prove semantic correctness or operational effectiveness.
+O manifesto do produto declara `UNLICENSED`; não se afirma uma licença para o TeamFlow. A marca INTEIRO incluída tem aviso separado de atribuição/licença em [docs/assets/INTEIRO-MARK-LICENSE.txt](docs/assets/INTEIRO-MARK-LICENSE.txt).

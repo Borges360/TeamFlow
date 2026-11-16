@@ -17,13 +17,12 @@ assert.equal(packageJson.name, "teamflow", "package name must remain teamflow");
 assert.match(packageJson.version, /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u);
 assert.equal(squadVersion, packageJson.version, "squad.yaml version differs from package.json");
 assert.equal(manifestVersion, packageJson.version, ".squad/manifest.yaml version differs from package.json");
-assert.equal(packageJson.publishConfig?.registry, "https://registry.npmjs.org/");
-assert.equal(packageJson.publishConfig?.access, "public");
-assert.equal(packageJson.publishConfig?.provenance, true);
+assert.equal(packageJson.private, true, "TeamFlow is internal and must remain private to npm");
+assert.equal(Object.hasOwn(packageJson, "publishConfig"), false, "public npm metadata is out of scope");
 assert.equal(packageJson.packageManager, "npm@11.9.0");
 assert.deepEqual(
   packageJson.files,
-  ["bin/", "src/", ".squad/", "AGENTS.md", "squad.yaml", "start.md", "docs/local-teams-cli.md"],
+  ["bin/", "dist/", "runtime-assets/"],
   "npm files allowlist changed unexpectedly",
 );
 assert.equal(Object.keys(packageJson.dependencies ?? {}).length, 0, "runtime dependencies are not allowed without review");

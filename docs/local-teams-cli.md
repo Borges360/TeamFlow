@@ -1,55 +1,56 @@
-# CLI local, times e projetos
+# CLI local, times, projetos e workspaces
 
-`teamflow` is a dependency-free npm CLI. It keeps reusable team configuration and isolated implementation projects outside product repositories.
+`teamflow` é uma CLI Node local, sem dependências runtime. A distribuição npm não está habilitada neste plano. A CLI mantém estado privado fora dos checkouts de produto e não instala nem atualiza uma cópia Git de si própria.
 
-## Home and layout
-
-Windows defaults to `%USERPROFILE%\.teamFlow`; macOS and Linux default to `$HOME/.teamFlow`. Override explicitly with `TEAMFLOW_HOME` or `--home <path>`.
+## Home persistente
 
 ```text
 .teamFlow/
-├── metadata/
-├── teams/<team-id>/
-│   ├── team-config.yaml
-│   ├── context/ catalog/ policies/ profiles/ templates/ history/
-│   └── projects/<project-id>/
-│       ├── project-config.yaml
-│       ├── effective-context/ generated-runtime-files/
-│       └── deliveries/ evidence/ history/
-└── backups/
+├── internal/
+│   ├── bases/<version>-<manifest-hash>/
+│   ├── repository-cache/<remote-digest>.git/
+│   └── locks/
+└── teams/<team-id>/projects/<project-id>/
+    ├── state/
+    │   ├── repositories/ demands/ worktrees/ locks/ history/
+    │   └── team-snapshot.json
+    └── workspace/
+        ├── deliveries/
+        └── repositories/
 ```
 
-The `.yaml` configuration files contain JSON-compatible YAML so they can be parsed without runtime dependencies. Setup config passed to `--non-interactive` uses the same representation.
+No Windows o home padrão é `%USERPROFILE%\.teamFlow`; nos demais sistemas é `$HOME/.teamFlow`. Use `TEAMFLOW_HOME` ou `--home <path>` para sobrescrever.
 
-During setup, the package base is copied once to `metadata/bases/<package-version>/`. Project activation writes the base and effective-context locations into `generated-runtime-files/activation.json`, so a runtime can continue after an ephemeral `npx` process exits. Each project snapshots team configuration plus `context/`, `catalog/`, `policies/`, `profiles/` and `templates/`; `project compare` shows both configuration and file differences.
+Cada projeto fixa uma base por versão e hash. `project upgrade-base` é a única forma de avançar esse pin; o histórico preserva a referência anterior e `project rollback-base` exige chave e motivo. Projetos antigos são adaptados somente quando acessados: o CLI não clona, move ou apaga seus arquivos, inclusive deliveries legados.
 
-## Fast setup
+## Execução a partir do checkout
 
 ```bash
-npx teamflow setup
-teamflow setup --resume
-teamflow setup --dry-run
-teamflow setup --non-interactive --config setup.json
+npm ci --ignore-scripts
+node bin/teamflow.js setup --dry-run
+node bin/teamflow.js project path customer --team platform
 ```
 
-The wizard asks for the team, Git/commit policy, agent preset and an optional first project. Everything else stays pending and the team remains in `bootstrap`. Portuguese is the default locale and is stored explicitly (`pt-BR`) so message catalogs can be added without changing persisted schemas.
+`project path` imprime o workspace que deve ser aberto pelo usuário. Não existe `project activate` nem arquivo global de projeto ativo. Não use `npx` nem instalação npm global: o produto permanece interno e sem rota npm neste plano.
 
-Agent presets are `essential`, `complete`, and `custom`. Selection controls locally available profiles, never gate applicability. Existing projects keep their agent snapshot until `project update-snapshot <id> --reason <motivo>` is explicitly run.
+## Repositórios persistentes
 
-## Commands
-
-```text
-team create|list|show|use|configure
-team agents list|install|remove|show
-project create|list|activate|status|archive|compare|update-snapshot
-doctor
-export team
-export project <project-id>
-catalog add-repository|add-system|add-journey|import
-playbook list|show
-workflow show
+```bash
+teamflow repository add customer-api --project customer --team platform --remote https://scm.example/customer-api.git
+teamflow repository attach customer-api --project customer --team platform --path /existing/customer-api
+teamflow repository status --project customer --team platform
+teamflow repository sync customer-api --project customer --team platform
+teamflow repository detach customer-api --project customer --team platform
 ```
 
-Project commands always require an active team and resolve paths only beneath that team. `project list` never aggregates across teams. Archive preserves the project. Export writes outside the private home only when `--output` is explicitly supplied; otherwise it prints to stdout.
+`add` cria ou reutiliza cache bare pelo digest do remote e cria um checkout persistente em `workspace/repositories/`. `attach` apenas valida o checkout externo e clona uma cópia gerenciada; nunca move nem altera a origem. `sync` recusa checkout dirty ou operação Git pendente. `detach` só remove o binding e mantém checkout/cache para limpeza explícita do usuário.
 
-The Git policy may prepare local commits and the inspectable `ready_for_push` status, but it cannot perform push, PR, merge, tag, release or deploy.
+## Demandas e worktrees
+
+```bash
+teamflow demand create DEM-42 --project customer --team platform --title "Ajustar filtro" --file demanda.txt
+teamflow demand list --project customer --team platform
+teamflow demand exec DEM-42 --project customer --team platform -- codex
+```
+
+O texto recebido por `--text` ou `--file` é preservado literalmente. `exec` cria/reutiliza worktrees em `state/worktrees/<demand-id>/`, gera um `AGENTS.md` que aponta à base pinada e inicia o runtime nessa raiz sem shell. O ambiente inclui apenas caminhos `TEAMFLOW_*`, nunca credenciais.

@@ -1,6 +1,6 @@
 # Policy: Evidence
 
-Evidence makes a claim independently inspectable. Store it under the active project's private `teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/evidence/` root in `TEAMFLOW_HOME`, or link to an approved immutable system when sensitive, shared, or too large. Never create this bundle in a product checkout or commit it to a squad release branch.
+Evidence makes a claim independently inspectable. Store it under the demand's private `teams/<team-id>/projects/<project-id>/workspace/deliveries/<demand-id>/evidence/` root in `TEAMFLOW_HOME` (or the retained legacy deliveries root), or link to an approved immutable system when sensitive, shared, or too large. Never create this bundle in a product checkout or commit it to a squad release branch.
 
 ## Required metadata
 

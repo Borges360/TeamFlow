@@ -4,7 +4,7 @@ The architecture is deliberately two-layered:
 
 ```text
 Cached immutable squad base            Project/domain configuration
-AGENTS.md + .squad/            +      TEAMFLOW_HOME/teams/.../effective-context/
+AGENTS.md + .squad/            +      TEAMFLOW_HOME/teams/.../state/
 roles, workflows, policies,           catalog, ownership, stack,
 contracts, skills, templates          constraints, domain profiles
                     ↓
@@ -28,7 +28,7 @@ The development tool supplies execution, context windows, native delegation, ter
 
 ## Durable demand artifacts
 
-For work performed in an active project, the private `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/deliveries/<demand-id>/` directory retains the demand, selected context, decisions, evidence references, gate outcomes, reviews, and summary. It is not promoted with squad releases or created in a product checkout. Permanent documentation is routed to the canonical documentation repository or the owner repository's `docs/` directory.
+For work performed in a demand worktree, the private `TEAMFLOW_HOME/teams/<team-id>/projects/<project-id>/workspace/deliveries/<demand-id>/` directory retains the demand, selected context, decisions, evidence references, gate outcomes, reviews, and summary. Legacy projects retain their existing delivery root. It is not promoted with squad releases or created in a product checkout. Permanent documentation is routed to the canonical documentation repository or the owner repository's `docs/` directory.
 
 Before implementation, the delivery also retains a change plan describing likely changed/affected pieces, repository-local instructions, branch model, target-project pipeline, verification and integration order. See the end-to-end Mermaid flow in [start.md](../start.md#fluxo-da-squad).
 
