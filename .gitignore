@@ -28,6 +28,7 @@ npm-debug.log*
 !.harness/project.mjs.harness-managed
 !.harness/install-manifest.json
 !.harness/install-manifest.json.harness-managed
+!.harness/mcp-managed.json
 # harness:versioned-instructions:end
 
 # Cópias instaladas pelo harness e preferências locais de runtime.
@@ -50,8 +51,6 @@ npm-debug.log*
 .cursor/rules/harness-core.mdc.harness-managed
 .cursor/rules/pi-extensions.mdc
 .cursor/rules/pi-extensions.mdc.harness-managed
-.codex/
-.cursor/mcp.json
-.mcp.json
-.pi/mcp.json
+.codex/*
+!.codex/config.toml
 .codex-plugin/
