@@ -26,6 +26,13 @@ No npm publication, Git tag, GitHub Release, push, merge, or deployment is perfo
 The entries below used an internal structural-version series before the public
 teamFlow release line was consolidated under `v0.x` tags and npm package versions.
 
+## 1.3.0 - 2026-11-04
+
+- Added operational playbooks and multi-repository controls for coordinated project work.
+- Added the proactive handoff suggestions rule, grounded in current signals and the active task.
+
+Prepared on `release/1.3.0` in the structural series and never published; its content is part of the `v0.x` line.
+
 ## 1.2.0 - 2026-08-30
 
 - Added the reusable `/feature`, `/bugfix`, `/tests`, `/performance`, `/adr`, `/finops`, `/doc`, and `/refactor` playbooks.
